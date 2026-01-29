@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Updated import for v3+
+import '../Theme.css';
 
 const ManufacturerDashboard = ({ contract, account }) => {
     const [formData, setFormData] = useState({
@@ -77,45 +78,49 @@ const ManufacturerDashboard = ({ contract, account }) => {
     };
 
     return (
-        <div className="panel dashboard-panel">
-            <h2>🏭 Manufacturer Dashboard</h2>
-            <div className="form-container">
-                <form onSubmit={registerBatch}>
+        <div className="dashboard-container">
+            <div className="glass-panel dashboard-card">
+                <div className="card-header">
+                    <h2>🏭 Manufacturer Dashboard</h2>
+                    <p>Register new medicine batches on the blockchain.</p>
+                </div>
+                
+                <form onSubmit={registerBatch} className="glass-form">
                     <div className="input-group">
                         <label>Medicine Name</label>
-                        <input type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required onChange={handleChange} />
+                        <input className="glass-input" type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required onChange={handleChange} />
                     </div>
                     <div className="input-group">
                         <label>Batch ID (Printed on Pack)</label>
-                        <input type="text" name="batchId" placeholder="e.g. BATCH-001" required onChange={handleChange} />
+                        <input className="glass-input" type="text" name="batchId" placeholder="e.g. BATCH-001" required onChange={handleChange} />
                     </div>
                     <div className="input-group">
                         <label>Manufacturer Name</label>
-                        <input type="text" name="manufacturerName" placeholder="e.g. HealthCorp India" required onChange={handleChange} />
+                        <input className="glass-input" type="text" name="manufacturerName" placeholder="e.g. HealthCorp India" required onChange={handleChange} />
                     </div>
                     <div className="input-group">
                         <label>Expiry Date</label>
-                        <input type="date" name="expiryDate" required onChange={handleChange} />
+                        <input className="glass-input" type="date" name="expiryDate" required onChange={handleChange} />
                     </div>
                     <div className="input-group">
                         <label>Certificate of Analysis (Lab Report)</label>
-                        <input type="file" required onChange={handleFileChange} />
+                        <input className="glass-input file-input" type="file" required onChange={handleFileChange} />
                     </div>
 
-                    <button type="submit" disabled={loading} className="action-button">
-                        {loading ? 'Processing...' : 'Register Batch on Blockchain'}
+                    <button type="submit" disabled={loading} className="glass-btn submit-btn">
+                        {loading ? 'Processing Transaction...' : 'Register Batch'}
                     </button>
                 </form>
 
-                {status && <p className="status-text">{status}</p>}
+                {status && <div className="status-box glass-panel"><p>{status}</p></div>}
 
                 {generatedQr && (
-                    <div className="qr-section">
-                        <h3>🖨️ Print this QR Code</h3>
-                        <div className="qr-code">
-                            <QRCodeCanvas value={generatedQr} size={200} />
+                    <div className="qr-section glass-panel">
+                        <h3>🖨️ Batch Registered!</h3>
+                        <div className="qr-wrapper">
+                            <QRCodeCanvas value={generatedQr} size={180} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} includeMargin={true} />
                         </div>
-                        <p>URL: {generatedQr}</p>
+                        <p className="qr-url">Verification URL: <span>{generatedQr}</span></p>
                     </div>
                 )}
             </div>
