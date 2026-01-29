@@ -1,28 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
+import '../Theme.css';
 
-const WalletConnect = ({ account, network, connectWallet }) => {
+const WalletConnect = ({ account, network, connectWallet, disconnectWallet }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     const getNetworkName = (chainId) => {
         switch (chainId) {
-            case 1: return "Ethereum Mainnet";
+            case 80002: return "Polygon Amoy";
             case 137: return "Polygon Mainnet";
-            case 80001: return "Mumbai Testnet";
-            case 80002: return "Polygon Amoy Testnet Connected";
-            case 31337: return "Hardhat Local";
-            default: return `Unknown (ChainID: ${chainId})`;
+            case 1: return "Ethereum";
+            default: return "Unknown Network";
         }
     };
 
+    const isAmoy = network?.chainId === 80002;
+
     return (
-        <div className="wallet-connector">
+        <div className="wallet-wrapper">
             {account ? (
-                <div className="wallet-info">
-                    <span className="network-name">{network ? getNetworkName(network.chainId) : '...'}</span>
-                    <span className="account-address">
-                        {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
-                    </span>
+                <div
+                    className="glass-panel wallet-card"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <div className="wallet-status">
+                        <span className={`status-dot ${isAmoy ? 'online' : 'error'}`}></span>
+                        <span className="network-label">{network ? getNetworkName(network.chainId) : '...'}</span>
+                    </div>
+
+                    {isHovered ? (
+                        <button className="disconnect-btn" onClick={disconnectWallet}>
+                            Disconnect
+                        </button>
+                    ) : (
+                        <span className="account-address">
+                            {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
+                        </span>
+                    )}
                 </div>
             ) : (
-                <button onClick={connectWallet} className="connect-button">
+                <button onClick={connectWallet} className="glass-btn connect-btn">
                     Connect Wallet
                 </button>
             )}
