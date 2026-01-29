@@ -5,6 +5,7 @@ import MedRegistryABI from './contracts/MedRegistry.json'; // Updated ABI
 import WalletConnect from './components/WalletConnect';
 import ManufacturerDashboard from './components/ManufacturerDashboard';
 import PatientVerify from './components/PatientVerify';
+import LandingPage from './components/LandingPage';
 import './App.css';
 
 const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
@@ -23,7 +24,44 @@ function App() {
                 const newProvider = new ethers.providers.Web3Provider(window.ethereum);
                 const accounts = await newProvider.send("eth_requestAccounts", []);
                 const newSigner = newProvider.getSigner();
-                const networkInfo = await newProvider.getNetwork();
+                let networkInfo = await newProvider.getNetwork();
+
+                if (networkInfo.chainId !== 80002) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: '0x13882' }], // 80002
+                        });
+                    } catch (switchError) {
+                        // This error code indicates that the chain has not been added to MetaMask.
+                        if (switchError.code === 4902) {
+                            try {
+                                await window.ethereum.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [
+                                        {
+                                            chainId: '0x13882',
+                                            chainName: 'Polygon Amoy Testnet',
+                                            nativeCurrency: {
+                                                name: 'MATIC',
+                                                symbol: 'MATIC',
+                                                decimals: 18,
+                                            },
+                                            rpcUrls: ['https://rpc-amoy.polygon.technology/'],
+                                            blockExplorerUrls: ['https://amoy.polygonscan.com/'],
+                                        },
+                                    ],
+                                });
+                            } catch (addError) {
+                                console.error("Error adding Amoy network:", addError);
+                            }
+                        } else {
+                            console.error("Error switching to Amoy network:", switchError);
+                        }
+                    }
+                    // Refresh network info after switch
+                    networkInfo = await newProvider.getNetwork();
+                }
 
                 if (networkInfo.chainId === 80002) {
                     networkInfo.name = "Amoy";
@@ -44,6 +82,15 @@ function App() {
             alert("MetaMask is not installed.");
         }
     };
+    
+    const disconnectWallet = () => {
+        setAccount(null);
+        setProvider(null);
+        setSigner(null);
+        setContract(null);
+        setNetwork(null);
+        // Optional: clear local storage if you were persisting logic
+    };
 
     useEffect(() => {
         if (window.ethereum && window.ethereum.selectedAddress) {
@@ -59,31 +106,29 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <div className="logo-area">
-                    <h1>🏥 MedProof</h1>
-                    <span className="subtitle">Pharmacy Trust Infrastructure</span>
-                </div>
-                <div className="header-controls">
-                    <button onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>For Patients</button>
-                    <button onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>For Manufacturers</button>
-                    <WalletConnect account={account} network={network} connectWallet={connectWallet} />
-                </div>
-            </header>
-            <main>
-                {!account ? (
-                    <div className="connect-prompt">
-                        <h2>Welcome to MedProof</h2>
-                        <p>Please connect your wallet to access the trust network.</p>
-                        <button className="big-connect-btn" onClick={connectWallet}>Connect Wallet</button>
-                    </div>
-                ) : (
-                    <div className="content-area">
-                        {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
-                        {view === 'consumer' && <PatientVerify contract={contract} />}
-                    </div>
-                )}
-            </main>
+            {!account ? (
+                <LandingPage connectWallet={connectWallet} />
+            ) : (
+                <>
+                    <header className="App-header">
+                        <div className="logo-area">
+                            <h1>🏥 MedProof</h1>
+                            <span className="subtitle">Pharmacy Trust Infrastructure</span>
+                        </div>
+                        <div className="header-controls">
+                            <button onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>For Patients</button>
+                            <button onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>For Manufacturers</button>
+                            <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                        </div>
+                    </header>
+                    <main>
+                        <div className="content-area">
+                            {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
+                            {view === 'consumer' && <PatientVerify contract={contract} />}
+                        </div>
+                    </main>
+                </>
+            )}
         </div>
     );
 }
