@@ -111,14 +111,19 @@ function App() {
             ) : (
                 <>
                     <header className="App-header">
-                        <div className="logo-area">
-                            <h1>🏥 MedProof</h1>
-                            <span className="subtitle">Pharmacy Trust Infrastructure</span>
-                        </div>
-                        <div className="header-controls">
-                            <button onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>For Patients</button>
-                            <button onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>For Manufacturers</button>
-                            <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                        <div className="header-inner">
+                            <div className="logo-area">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Satyamev Jayate" className="emblem" />
+                                <div className="logo-text">
+                                    <h1>MedProof</h1>
+                                    <span className="subtitle">Ministry of Health & Family Welfare</span>
+                                </div>
+                            </div>
+                            <div className="header-controls">
+                                <button onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>Verify Medicine</button>
+                                <button onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer Login</button>
+                                <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                            </div>
                         </div>
                     </header>
                     <main>
