@@ -13,12 +13,15 @@
   padding: 10px 0;
   font-size: 0.85rem;
   font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .marquee-content span {
   display: inline-block;
   padding-left: 100%;
   animation: marquee 25s linear infinite;
+  white-space: nowrap;
 }
 
 @keyframes marquee {
@@ -31,65 +34,163 @@
   }
 }
 
-/* Hero Section - Clean Light Mode */
+/* Hero Banner Slider - Graphic Style */
 .hero-section {
+  padding: 0;
+  margin: 0;
+  background: #f0f0f0;
+  border-bottom: 4px solid var(--gov-orange);
   position: relative;
-  padding: 80px 20px 100px;
-  background: white;
-  background-image: linear-gradient(180deg, #FFFFFF 0%, #EFF6FF 100%);
-  /* Subtle blue tint at bottom */
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
+  /* Mimic banner height */
+  height: 480px;
+  overflow: hidden;
 }
 
-.content-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
-  z-index: 2;
+.banner-slider {
+  width: 100%;
+  height: 100%;
   position: relative;
-  padding: 20px;
-  animation: fadeUp 0.8s ease-out;
+  background: linear-gradient(135deg, #1b3a57 0%, #0d253f 100%);
+  /* Graphic Dark Blue */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Simulated Graphic Post */
+.banner-slide {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.banner-graphic {
+  flex: 1;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.graphic-placeholder {
+  width: 400px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8rem;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Campaign Text Style */
+.banner-content {
+  flex: 1;
+  color: white;
+  z-index: 2;
+  padding-right: 40px;
+}
+
+.banner-tagline {
+  background: #D4145A;
+  color: white;
+  display: inline-block;
+  padding: 5px 15px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 2px;
 }
 
 .title {
-  font-size: 3.5rem;
-  color: var(--gov-blue);
-  margin-bottom: 16px;
+  font-size: 3.8rem;
+  color: #FFD700;
+  /* Gold for emphasis */
+  margin-bottom: 10px;
   font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -0.02em;
-  /* Removed gradients/shadows for clean look */
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-family: 'Poppins', sans-serif;
 }
 
 .subtitle {
-  font-size: 1.5rem;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  font-weight: 500;
-}
-
-.cta-container {
-  margin-top: 40px;
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 30px;
+  font-weight: 300;
 }
 
 .connect-wallet-btn {
-  background: var(--gov-orange);
-  color: white;
-  padding: 16px 40px;
+  background: white;
+  color: #D4145A;
+  padding: 15px 40px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
-  text-transform: uppercase;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
 }
 
 .connect-wallet-btn:hover {
-  background-color: #e65100;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+  background: #ffeb3b;
+  color: #000;
+}
+
+/* Slider Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+@media (max-width: 900px) {
+  .banner-slide {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .banner-graphic {
+    display: none;
+  }
+
+  .banner-content {
+    padding-right: 0;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .hero-section {
+    height: auto;
+    padding: 60px 20px;
+  }
 }
 
 /* Info Grid - Overlap Adjustment */

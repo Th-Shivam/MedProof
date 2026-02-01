@@ -1,212 +1,175 @@
-/* Layout Containers */
-.App {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-light);
+/* NIC / Gov.in Standard Styling */
+
+/* Top Strip */
+.gov-top-strip {
+  background-color: #333333;
+  color: #cccccc;
+  font-size: 0.75rem;
+  padding: 6px 0;
+  border-bottom: 1px solid #444;
 }
 
-/* Header Styles */
-.App-header {
-  background: white;
-  border-bottom: 3px solid var(--gov-orange);
-  padding: 1rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+.header-strip-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logo-area {
+.gov-links a {
+  color: #cccccc;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.gov-links a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.separator {
+  margin: 0 8px;
+  color: #666;
+}
+
+.gov-settings {
+  display: flex;
+  align-items: center;
+}
+
+.font-resize button {
+  background: none;
+  border: 1px solid #555;
+  color: white;
+  margin-left: 5px;
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+}
+
+/* Main NIC Header */
+.nic-header {
+  background: white;
+  padding: 15px 0;
+  /* Use official gradient border often seen */
+  box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.header-inner-nic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-section {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.logo-area img.emblem {
-  height: 60px;
+.emblem-placeholder {
+  /* Mimics the visual weight of the Ashoka Pillar */
+  filter: grayscale(100%);
+  /* Often logos are monochrome or metallic */
+  opacity: 0.8;
 }
 
-.logo-text h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--text-primary);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.logo-text .subtitle {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 500;
-  display: block;
-}
-
-.header-controls {
+.ministry-text {
   display: flex;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 2px solid #ddd;
+  padding-left: 15px;
 }
 
-.header-controls button:not(.connect-btn) {
-  background: transparent;
-  color: var(--text-primary);
-  border: 1px solid transparent;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s;
+.gov-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
 }
 
-.header-controls button:not(.connect-btn):hover {
-  background-color: #f1f5f9;
-  color: var(--primary);
+.ministry-label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
-.header-controls button.active {
-  background-color: var(--primary);
+.tech-logos {
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* Gov Navigation Bar */
+.nic-navbar {
+  background: #002147;
+  /* Standard Gov Blue */
+  border-top: 4px solid var(--gov-orange);
+  border-bottom: 4px solid var(--gov-green);
   color: white;
 }
 
-main {
-  flex: 1;
-  padding: 2rem 0;
-  width: 100%;
+.nic-navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.content-area {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+.nic-navbar li {
+  position: relative;
 }
 
-/* Functional Components Override */
-.dashboard-container,
-.verify-container {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.dashboard-card,
-.verify-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 30px;
-  box-shadow: var(--shadow-sm);
-  margin: 0 auto;
-  max-width: 800px;
-}
-
-.card-header h2 {
-  color: var(--primary);
-  border-bottom: 2px solid var(--secondary);
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.card-header p {
-  color: var(--text-secondary);
-  text-align: left;
-}
-
-/* Form Elements */
-.glass-form {
-  gap: 1.5rem;
-}
-
-.glass-input,
-.file-input {
-  background: #fff !important;
-  border: 1px solid #ccc !important;
-  color: #333 !important;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.submit-btn {
-  background-color: var(--gov-green) !important;
-  color: white !important;
-  border: none;
-  padding: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.status-box {
-  background: #e8f5e9;
-  color: var(--gov-green);
-  border: 1px solid var(--gov-green);
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 4px;
-}
-
-/* Verification Result Cards */
-.result-card {
-  margin-top: 2rem;
-  padding: 2rem;
-  border-radius: var(--radius-md);
-}
-
-.valid-card {
-  background: #f0fdf4;
-  border: 1px solid var(--success);
-}
-
-.expired-card {
-  background: #fef2f2;
-  border: 1px solid var(--error);
-}
-
-.status-header {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-}
-
-.detail-item {
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
-}
-
-.detail-item strong {
-  color: #555;
-  font-weight: 600;
-}
-
-.detail-item span {
-  color: #000;
+.nic-navbar a {
+  display: block;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
   font-weight: 500;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s;
 }
 
-/* Wallet Styles - Minimalist */
-.wallet-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  color: #333;
-  padding: 8px 16px;
-  border-radius: 4px;
+.nic-navbar a:hover,
+.nic-navbar a.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-bottom: 3px solid white;
+  /* Active state usually has underline */
+  padding-bottom: 9px;
+  /* Compensate for border */
 }
 
-.account-address {
-  background: #e2e8f0;
-  color: #333;
-  padding: 2px 8px;
-  font-family: monospace;
+.right-align-btn {
+  margin-left: auto;
+  padding-right: 10px;
 }
 
-.disconnect-btn {
-  color: var(--error);
+.login-btn-small {
+  background: var(--gov-orange);
+  border: none;
+  color: white;
+  padding: 6px 15px;
+  border-radius: 2px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.login-btn-small:hover {
+  background: #e65100;
+}
+
+/* Override App-header if it exists */
+.App-header {
+  display: none;
 }

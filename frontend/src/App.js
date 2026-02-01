@@ -110,22 +110,66 @@ function App() {
                 <LandingPage connectWallet={connectWallet} />
             ) : (
                 <>
-                    <header className="App-header">
-                        <div className="header-inner">
-                            <div className="logo-area">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Satyamev Jayate" className="emblem" />
-                                <div className="logo-text">
-                                    <h1>MedProof</h1>
-                                    <span className="subtitle">Ministry of Health & Family Welfare</span>
+                    {/* Accessibility & Settings Top Strip */}
+                    <div className="gov-top-strip">
+                        <div className="gov-container header-strip-inner">
+                            <div className="gov-links">
+                                <a href="#main">Skip to Main Content</a>
+                                <span className="separator">|</span>
+                                <a href="#screen-reader">Screen Reader Access</a>
+                            </div>
+                            <div className="gov-settings">
+                                <span className="font-resize">
+                                    <button>A-</button>
+                                    <button>A</button>
+                                    <button>A+</button>
+                                </span>
+                                <span className="separator">|</span>
+                                <div className="lang-switch">
+                                    <span>English</span> / <span>हिन्दी</span>
                                 </div>
                             </div>
-                            <div className="header-controls">
-                                <button onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>Verify Medicine</button>
-                                <button onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer Login</button>
-                                <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                        </div>
+                    </div>
+
+                    {/* Main Government Standard Header */}
+                    <header className="nic-header">
+                        <div className="gov-container header-inner-nic">
+                            <div className="logo-section">
+                                <div className="emblem-placeholder">
+                                    {/* Placeholder for State Emblem - Using Emoji or simple Circle usually */}
+                                    <div style={{width:'60px', height:'60px', borderRadius:'50%', border:'2px solid #ccc', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'30px'}}>
+                                        🏛️
+                                    </div>
+                                </div>
+                                <div className="ministry-text">
+                                    <span className="gov-label">MedProof Protocol</span>
+                                    <span className="ministry-label">Decentralized Authenticity Infrastructure</span>
+                                </div>
+                            </div>
+                            
+                            <div className="azadi-logo">
+                                <div className="tech-logos">
+                                    <span>Secured by<br/><strong>Polygon PoS</strong></span>
+                                </div>
                             </div>
                         </div>
                     </header>
+
+                    {/* Standard Navbar */}
+                    <nav className="nic-navbar">
+                        <div className="gov-container">
+                            <ul>
+                                <li><a href="#" onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>Batch Verification</a></li>
+                                <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer & Supply Chain</a></li>
+                                <li><a href="#">Network Status</a></li>
+                                <li><a href="#">Support</a></li>
+                                <li className="right-align-btn">
+                                  <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                     <main>
                         <div className="content-area">
                             {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}

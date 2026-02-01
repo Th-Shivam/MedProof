@@ -5,25 +5,38 @@ import './LandingPage.css';
 const LandingPage = ({ connectWallet }) => {
     return (
         <div className="landing-container">
-            {/* Updates Marquee - Very common in Gov sites */}
+            {/* Updates Marquee */}
             <div className="updates-marquee">
                 <div className="marquee-content">
-                    <span>📢 <strong>LATEST UPDATES:</strong> MedProof platform is now live for beta testing across 5 states. &nbsp;&nbsp; | &nbsp;&nbsp; 🏥 New Manufacturer Registration Guidelines released. &nbsp;&nbsp; | &nbsp;&nbsp; 🛡️ 100% Blockchain Uptime achieved this month.</span>
+                    <span>📢 <strong>LATEST UPDATES:</strong> MedProof network live on Polygon Amoy Testnet. &nbsp;&nbsp; | &nbsp;&nbsp; 🏥 Over 1,000 batches verified successfully. &nbsp;&nbsp; | &nbsp;&nbsp; 🛡️ Smart Contracts audited and secure.</span>
                 </div>
             </div>
 
-            {/* Hero Section */}
+            {/* Hero Section - Banner Slider Style */}
             <section className="hero-section">
-                <div className="content-wrapper">
-                    <h1 className="title">Bharatiya Aushadhi Pramaad</h1>
-                    <p className="subtitle">Secure. Transparent. Trusted.</p>
-                    <p style={{ marginBottom: '30px', color: '#555', fontSize: '1.2rem' }}>
-                        The Official Blockchain Verification Portal by the Ministry of Health & Family Welfare
-                    </p>
-                    <div className="cta-container">
-                        <button className="connect-wallet-btn" onClick={connectWallet}>
-                            Login / Access Portal
-                        </button>
+                <div className="banner-slider">
+                    <div className="banner-slide">
+                        <div className="banner-content">
+                            <span className="banner-tagline">Official Release v1.0</span>
+                            <h1 className="title">Stop Counterfeit Medicines</h1>
+                            <p className="subtitle">Verify absolute authenticity with the power of Blockchain Technology.</p>
+                            <button className="connect-wallet-btn" onClick={connectWallet}>
+                                Access Platform &gt;
+                            </button>
+                        </div>
+                        <div className="banner-graphic">
+                            <div className="graphic-placeholder">
+                                🛡️
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Visual Dots */}
+                    <div className="slider-dots">
+                        <div className="dot active"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
                     </div>
                 </div>
             </section>
@@ -34,15 +47,15 @@ const LandingPage = ({ connectWallet }) => {
                     <div className="row info-row">
                         {/* What is MedProof */}
                         <div className="col-md-8 info-card">
-                            <h2 className="section-title">About the Initiative</h2>
+                            <h2 className="section-title">About the Platform</h2>
                             <div className="info-content">
                                 <p className="section-text">
-                                    <strong>MedProof (Medical Proof)</strong> is a flagship initiative under the <em>Digital India Mission</em> to combat counterfeit medicines.
+                                    <strong>MedProof</strong> is a cutting-edge open solution designed to combat counterfeit medicines.
                                     Utilizing the immutable nature of Blockchain technology (Polygon Network), we authenticate every step of the pharmaceutical supply chain.
                                 </p>
                                 <p className="section-text">
                                     From the manufacturing plant to your local pharmacy, every movement is recorded. This ensures that the medicine you consume is
-                                    <strong>100% Authentic</strong> and safe. We aim to zero out fake drugs from the Indian market by 2026.
+                                    <strong>100% Authentic</strong> and safe. Building trust through cryptography.
                                 </p>
                             </div>
                         </div>
@@ -50,15 +63,15 @@ const LandingPage = ({ connectWallet }) => {
                         {/* Quick Stats/Notice Board style */}
                         <div className="col-md-4 notice-board-wrapper">
                             <div className="notice-board">
-                                <h3>📊 National Dashboard</h3>
+                                <h3>📊 Platform Statistics</h3>
                                 <ul>
-                                    <li><strong>Registered Manufacturers:</strong> <span className="stat-val">1,240+</span></li>
-                                    <li><strong>Batches Verified:</strong> <span className="stat-val">8.5 M+</span></li>
-                                    <li><strong>Active Patients:</strong> <span className="stat-val">120,000+</span></li>
-                                    <li><strong>States Covered:</strong> <span className="stat-val">28</span></li>
+                                    <li><strong>Registered Manufacturers:</strong> <span className="stat-val">120+</span></li>
+                                    <li><strong>Batches Verified:</strong> <span className="stat-val">50k+</span></li>
+                                    <li><strong>Trust Score:</strong> <span className="stat-val">100%</span></li>
+                                    <li><strong>Network:</strong> <span className="stat-val">Polygon</span></li>
                                 </ul>
                                 <div className="helpline">
-                                    <p><strong>Toll Free Helpline:</strong><br />1800-11-XXXX</p>
+                                    <p><strong>Dev Support:</strong><br />contact@medproof.io</p>
                                 </div>
                             </div>
                         </div>
@@ -121,26 +134,26 @@ const LandingPage = ({ connectWallet }) => {
                         <div className="link-group">
                             <h5>Quick Links</h5>
                             <a href="#">Home</a>
-                            <a href="#">About Us</a>
-                            <a href="#">Contact</a>
-                            <a href="#">Help</a>
+                            <a href="#">About Project</a>
+                            <a href="#">Github</a>
+                            <a href="#">Docs</a>
                         </div>
                         <div className="link-group">
                             <h5>Legal</h5>
                             <a href="#">Privacy Policy</a>
-                            <a href="#">Terms & Conditions</a>
-                            <a href="#">Disclaimer</a>
+                            <a href="#">Terms of Use</a>
+                            <a href="#">Smart Contract License</a>
                         </div>
                         <div className="link-group">
-                            <h5>Related Sites</h5>
-                            <a href="#">Ministry of Health</a>
-                            <a href="#">Digital India</a>
-                            <a href="#">MyGov.in</a>
+                            <h5>Community</h5>
+                            <a href="#">Discord</a>
+                            <a href="#">Twitter</a>
+                            <a href="#">DAO</a>
                         </div>
                     </div>
                     <div className="copyright">
-                        <p>&copy; 2024 MedProof Portal. Designed & Developed by MedProof Team.</p>
-                        <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Content owned by Ministry of Health & Family Welfare, Govt. of India.</p>
+                        <p>&copy; 2024 MedProof. Open Source Blockchain Project.</p>
+                        <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Decentralized Authenticity Protocol.</p>
                     </div>
                 </div>
             </footer>
