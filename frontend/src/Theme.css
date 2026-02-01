@@ -1,144 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap');
+
 :root {
-    /* Colors - Modern Blue Palette */
-    --bg-dark: #0f172a;
-    /* Deep Slate Blue Background */
+    /* Premium Gov Palette - LIGHT THEME */
 
-    /* Glass Cards */
-    --bg-card: rgba(30, 41, 59, 0.4);
-    /* Slate-800 with opacity */
-    --bg-card-hover: rgba(51, 65, 85, 0.5);
-    /* Slate-700 */
-    --border-glass: rgba(148, 163, 184, 0.1);
-    /* Slate-400 */
+    /* Primary Colors */
+    --gov-orange: #FF9933;
+    --grad-orange: linear-gradient(135deg, #FF9933 0%, #FF6D00 100%);
 
-    /* Primary Actions */
-    --primary: #3b82f6;
-    /* Blue 500 - Vibrant */
-    --primary-hover: #2563eb;
-    /* Blue 600 */
-    --primary-glow: rgba(59, 130, 246, 0.5);
-    /* Blue Glow */
-    --secondary: #06b6d4;
-    /* Cyan 500 */
+    --gov-green: #138808;
+    --grad-green: linear-gradient(135deg, #4CAF50 0%, #1B5E20 100%);
+
+    /* Official Blue */
+    --gov-blue: #002147;
+    /* Oxford Blue - Very Official */
+    --primary: #1A5F7A;
+    /* Muted Blue for Primary Actions */
+    --grad-blue: linear-gradient(135deg, #002147 0%, #004D40 100%);
+
+    /* Backgrounds - Strict Light Mode */
+    --bg-light: #F9FAFB;
+    --bg-white: #FFFFFF;
 
     /* Text */
-    --text-main: #f8fafc;
-    /* Slate-50 */
-    --text-muted: #94a3b8;
-    /* Slate-400 */
+    --text-primary: #111827;
+    /* Near Black */
+    --text-secondary: #4B5563;
+    /* Grey 600 */
+    --text-muted: #9CA3AF;
 
-    /* Status Colors */
-    --error: #ef4444;
-    --success: #10b981;
-    /* Keep Green for Success/Valid */
-    --warning: #f59e0b;
+    /* Borders */
+    --border-color: #E5E7EB;
 
-    /* Spacing & Radius */
-    --radius-xl: 24px;
+    /* Modern Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    /* Spacing */
+    --radius-sm: 4px;
+    --radius-md: 8px;
     --radius-lg: 16px;
-    --radius-md: 12px;
-    --radius-sm: 8px;
+    --container-max: 1200px;
 }
 
 body {
-    background-color: var(--bg-dark);
-    /* Subtle mesh gradient background */
-    background-image:
-        radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08), transparent 25%);
-    color: var(--text-main);
-    font-family: 'Inter', 'Outfit', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    /* Clean subtle background texture */
+    background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+    background-size: 40px 40px;
 }
 
-/* Enhanced Glassmorphism Utilities */
-.glass-panel {
-    background: var(--bg-card);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-glass);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    /* Highlight top border */
-    border-radius: var(--radius-xl);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-panel:hover {
-    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.glass-input {
-    background: rgba(15, 23, 42, 0.6);
-    /* Darker input bg */
-    border: 1px solid var(--border-glass);
-    color: var(--text-main);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.glass-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(15, 23, 42, 0.8);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-    /* Focus ring */
-}
-
-.glass-btn {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-}
-
-.glass-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
-    filter: brightness(1.1);
-}
-
-.glass-btn:active {
-    transform: translateY(0);
-}
-
-.glass-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-    filter: grayscale(0.5);
-}
-
-/* Typography Overrides */
 h1,
 h2,
-h3 {
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    background: linear-gradient(to right, #fff, #94a3b8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+h3,
+h4,
+.title {
+    font-family: 'Poppins', sans-serif;
+    color: var(--gov-blue);
 }
 
-label {
-    display: block;
-    margin-bottom: 0.6rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 500;
+/* Button Standards */
+.gov-btn {
+    background: var(--gov-blue);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 4px;
+    /* Standard Govt squared edges or slightly rounded */
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.gov-btn:hover {
+    background: #00152e;
+    transform: translateY(-1px);
+}
+
+.gov-btn-orange {
+    background: var(--grad-orange);
+}
+
+/* Card Standards */
+.premium-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+    padding: 24px;
+}
+
+/* Inputs */
+.modern-input {
+    background: white;
+    border: 1px solid #D1D5DB;
+    padding: 10px 14px;
+    border-radius: 4px;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.modern-input:focus {
+    border-color: var(--gov-blue);
+    outline: 2px solid rgba(0, 33, 71, 0.1);
 }
