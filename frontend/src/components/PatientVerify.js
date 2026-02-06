@@ -90,7 +90,40 @@ const PatientVerify = ({ contract, initialBatchId }) => {
             <div className="glass-panel verify-card">
                 <h2>🕵️‍♀️ Consumer Verification</h2>
                 <p>Scan the QR code or enter the Batch ID manually to verify authenticity.</p>
-    
+
+                {/* Camera Scanner Section - Integrated into Glass UI */}
+                <div className="scan-controls" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                    {!isScanning ? (
+                        <button
+                            className="glass-btn"
+                            onClick={() => setIsScanning(true)}
+                            style={{ background: '#4f46e5', width: '100%', justifyContent: 'center' }}
+                        >
+                            📸 Open Camera Scanner
+                        </button>
+                    ) : (
+                        <button
+                            className="glass-btn"
+                            onClick={() => setIsScanning(false)}
+                            style={{ background: '#dc2626', width: '100%', justifyContent: 'center' }}
+                        >
+                            ❌ Close Camera
+                        </button>
+                    )}
+                </div>
+
+                {isScanning && (
+                    <div className="scanner-container" style={{ background: 'rgba(0,0,0,0.8)', padding: '10px', borderRadius: '12px', marginBottom: '1.5rem', overflow: 'hidden' }}>
+                        <QrScanner
+                            delay={300}
+                            onError={handleError}
+                            onScan={handleScan}
+                            style={{ width: '100%', borderRadius: '12px' }}
+                        />
+                        <p style={{ color: 'white', marginTop: '10px', fontSize: '0.9rem' }}>Point camera at a MedProof QR Code...</p>
+                    </div>
+                )}
+
                 <div className="search-section">
                     <div className="glass-input-wrapper">
                         <input
@@ -101,15 +134,15 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             onChange={(e) => setBatchId(e.target.value)}
                         />
                     </div>
-                    <button className="glass-btn verify-btn" onClick={verifyBatch} disabled={loading}>
+                    <button className="glass-btn verify-btn" onClick={() => verifyBatch()} disabled={loading}>
                         {loading ? 'Verifying...' : 'Verify Product'}
                     </button>
                 </div>
-    
-                {error && <div className="result-card error-card glass-panel"><h3>{error}</h3></div>}
-    
+
+                {error && <div className="result-card error-card glass-panel" style={{ marginTop: '1.5rem' }}><h3>{error}</h3></div>}
+
                 {result && (
-                    <div className={`result-card glass-panel ${result.isExpired ? 'expired-card' : 'valid-card'}`}>
+                    <div className={`result-card glass-panel ${result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem' }}>
                         {result.isExpired ? (
                             <div className="status-header expired">
                                 <h3>⚠️ WARNING: Medicine Expired!</h3>
@@ -124,14 +157,14 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                 </div>
                             </div>
                         )}
-    
+
                         <div className="details-grid">
                             <div className="detail-item"><strong>Medicine:</strong> <span>{result.medicineName}</span></div>
                             <div className="detail-item"><strong>Batch ID:</strong> <span>{result.batchId}</span></div>
                             <div className="detail-item"><strong>Expiry Date:</strong> <span>{result.formattedDate}</span></div>
                             <div className="detail-item"><strong>Manufacturer:</strong> <span>{result.manufacturerName}</span></div>
                         </div>
-    
+
                         <a
                             href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`}
                             target="_blank"
@@ -143,87 +176,6 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                     </div>
                 )}
             </div>
-        <div className="panel verify-panel">
-            <h2>🕵️‍♀️ Consumer Verification</h2>
-            <p>Scan the QR code or enter the Batch ID manually to verify authenticity.</p>
-
-            <div className="scan-controls">
-                {!isScanning ? (
-                    <button
-                        className="scan-btn"
-                        onClick={() => setIsScanning(true)}
-                    >
-                        📸 Open Camera Scanner
-                    </button>
-                ) : (
-                    <button
-                        className="scan-btn close-btn"
-                        onClick={() => setIsScanning(false)}
-                    >
-                        ❌ Close Camera
-                    </button>
-                )}
-            </div>
-
-            {isScanning && (
-                <div className="scanner-container">
-                    <QrScanner
-                        delay={300}
-                        onError={handleError}
-                        onScan={handleScan}
-                        style={{ width: '100%', borderRadius: '12px', marginBottom: '1rem' }}
-                    />
-                    <p className="scanning-text">Point camera at a MedProof QR Code...</p>
-                </div>
-            )}
-
-            <div className="search-box">
-                <input
-                    type="text"
-                    placeholder="Enter Batch ID (e.g. BATCH-001)"
-                    value={batchId}
-                    onChange={(e) => setBatchId(e.target.value)}
-                />
-                <button onClick={() => verifyBatch()} disabled={loading}>
-                    {loading ? 'Verifying...' : 'Verify'}
-                </button>
-            </div>
-
-            {error && <div className="result-card error-card"><h3>{error}</h3></div>}
-
-            {result && (
-                <div className={`result-card ${result.isExpired ? 'expired-card' : 'valid-card'}`}>
-                    {result.isExpired ? (
-                        <h3>⚠️ WARNING: Medicine Expired!</h3>
-                    ) : (
-                        <div>
-                            <h3>✅ AUTHENTIC & SAFE</h3>
-                            <ul className="trust-checklist">
-                                <li>✔ Verified against blockchain record</li>
-                                <li>✔ Certificate hash matched</li>
-                                <li>✔ Manufacturer licensed</li>
-                            </ul>
-                        </div>
-                    )}
-
-                    <div className="details-grid">
-                        <p><strong>Medicine:</strong> {result.medicineName}</p>
-                        <p><strong>Batch ID:</strong> {result.batchId}</p>
-                        <p><strong>Expiry Date:</strong> {result.formattedDate}</p>
-                        <p><strong>Manufacturer:</strong> {result.manufacturerName}</p>
-                        <p><strong>Status:</strong> {result.isExpired ? 'EXPIRED' : 'Valid'}</p>
-                    </div>
-
-                    <a
-                        href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="view-cert-btn"
-                    >
-                        📄 View Quality Certificate
-                    </a>
-                </div>
-            )}
         </div>
     );
 };

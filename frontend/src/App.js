@@ -83,7 +83,7 @@ function App() {
             alert("MetaMask is not installed.");
         }
     };
-    
+
     const disconnectWallet = () => {
         setAccount(null);
         setProvider(null);
@@ -137,13 +137,7 @@ function App() {
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <div className="content-area">
-                        {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
-                        {view === 'consumer' && <PatientVerify contract={contract} initialBatchId={initialBatchId} />}
-                    </div>
-                )}
-            </main>
+
 
                     {/* Main Government Standard Header */}
                     <header className="nic-header">
@@ -151,7 +145,7 @@ function App() {
                             <div className="logo-section">
                                 <div className="emblem-placeholder">
                                     {/* Placeholder for State Emblem - Using Emoji or simple Circle usually */}
-                                    <div style={{width:'60px', height:'60px', borderRadius:'50%', border:'2px solid #ccc', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'30px'}}>
+                                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', border: '2px solid #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '30px' }}>
                                         🏛️
                                     </div>
                                 </div>
@@ -160,10 +154,10 @@ function App() {
                                     <span className="ministry-label">Decentralized Authenticity Infrastructure</span>
                                 </div>
                             </div>
-                            
+
                             <div className="azadi-logo">
                                 <div className="tech-logos">
-                                    <span>Secured by<br/><strong>Polygon PoS</strong></span>
+                                    <span>Secured by<br /><strong>Polygon PoS</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +172,7 @@ function App() {
                                 <li><a href="#">Network Status</a></li>
                                 <li><a href="#">Support</a></li>
                                 <li className="right-align-btn">
-                                  <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                                    <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
                                 </li>
                             </ul>
                         </div>
@@ -186,7 +180,7 @@ function App() {
                     <main>
                         <div className="content-area">
                             {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
-                            {view === 'consumer' && <PatientVerify contract={contract} />}
+                            {view === 'consumer' && <PatientVerify contract={contract} initialBatchId={initialBatchId} />}
                         </div>
                     </main>
                 </>
