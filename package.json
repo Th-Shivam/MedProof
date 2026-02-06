@@ -26,6 +26,7 @@
   "dependencies": {
     "@noble/curves": "^2.0.1",
     "@openzeppelin/contracts": "^4.9.6",
+    "@splinetool/react-spline": "^4.1.0",
     "dotenv": "^16.0.3"
   }
 }
