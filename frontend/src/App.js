@@ -16,6 +16,7 @@ function App() {
     const [contract, setContract] = useState(null);
     const [network, setNetwork] = useState(null);
     const [view, setView] = useState('consumer'); // 'consumer' or 'manufacturer'
+    const [initialBatchId, setInitialBatchId] = useState(null);
 
     const connectWallet = async () => {
         if (window.ethereum) {
@@ -50,10 +51,15 @@ function App() {
             connectWallet();
         }
 
-        // Simple URL routing for /verify/BATCH-ID
+        // URL parsing for /verify/BATCH-ID
         const path = window.location.pathname;
-        if (path.includes('/verify')) {
-            setView('consumer');
+        if (path.includes('/verify/')) {
+            const parts = path.split('/verify/');
+            if (parts.length > 1) {
+                const idFromUrl = parts[1];
+                setInitialBatchId(idFromUrl);
+                setView('consumer');
+            }
         }
     }, []);
 
@@ -80,7 +86,7 @@ function App() {
                 ) : (
                     <div className="content-area">
                         {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
-                        {view === 'consumer' && <PatientVerify contract={contract} />}
+                        {view === 'consumer' && <PatientVerify contract={contract} initialBatchId={initialBatchId} />}
                     </div>
                 )}
             </main>
