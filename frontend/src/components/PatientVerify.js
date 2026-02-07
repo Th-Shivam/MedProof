@@ -28,10 +28,10 @@ const PatientVerify = ({ contract, initialBatchId }) => {
         setResult(null);
 
         try {
-            // Returns: [isValid, isExpired, medicineName, manufacturerName, ipfsHash]
+            // Returns: [isValid, isExpired, isRecalled, medicineName, manufacturerName, ipfsHash]
             const data = await contract.verifyBatch(idToVerify);
 
-            const [isValid, isExpired, rawMedicineName, manufacturerName, ipfsHash] = data;
+            const [isValid, isExpired, isRecalled, rawMedicineName, manufacturerName, ipfsHash] = data;
 
             let medicineName = rawMedicineName;
             let distributorName = null;
@@ -53,6 +53,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                 setResult({
                     isValid,
                     isExpired,
+                    isRecalled,
                     medicineName,
                     distributorName,
                     manufacturerName,
@@ -153,8 +154,15 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                 {error && <div className="result-card error-card glass-panel" style={{ marginTop: '1.5rem' }}><h3>{error}</h3></div>}
 
                 {result && (
-                    <div className={`result-card glass-panel ${result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem' }}>
-                        {result.isExpired ? (
+                    <div className={`result-card glass-panel ${result.isRecalled ? 'recalled-card' : result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem', border: result.isRecalled ? '2px solid red' : '' }}>
+                        {result.isRecalled ? (
+                            <div className="status-header recalled" style={{ background: 'rgba(255, 0, 0, 0.15)', border: '1px solid red', padding: '15px', borderRadius: '8px', textAlign: 'center' }}>
+                                <h2 style={{ color: 'red', fontSize: '1.8rem', animation: 'pulse 1s infinite' }}>☠️ DANGER: RECALLED ☠️</h2>
+                                <p style={{ color: '#c0392b', fontWeight: 'bold' }}>DO NOT USE THIS MEDICINE.</p>
+                                <p>The manufacturer has flagged this batch as unsafe.</p>
+                                <button className="glass-btn" style={{ background: 'red', marginTop: '10px' }} onClick={() => window.location.reload()}>REPORT ISSUE</button>
+                            </div>
+                        ) : result.isExpired ? (
                             <div className="status-header expired">
                                 <h3>⚠️ WARNING: Medicine Expired!</h3>
                                 <p>Do not consume this product.</p>
