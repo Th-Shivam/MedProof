@@ -55,9 +55,14 @@ const ManufacturerDashboard = ({ contract, account }) => {
                 contractAddress: contract.address
             });
 
+            // Combine Medicine Name and Distributor for Supply Chain simulation
+            const medicineNameWithDist = formData.distributorName
+                ? `${formData.medicineName}||${formData.distributorName}`
+                : formData.medicineName;
+
             const tx = await contract.registerBatch(
                 formData.batchId,
-                formData.medicineName,
+                medicineNameWithDist,
                 formData.manufacturerName,
                 ipfsHash,
                 expiryTimestamp
@@ -92,6 +97,14 @@ const ManufacturerDashboard = ({ contract, account }) => {
                             <input className="glass-input" type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required value={formData.medicineName} onChange={handleChange} />
                         </div>
                     </div>
+
+                    <div className="input-group">
+                        <label>Authorized Distributor (Supply Chain)</label>
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input" type="text" name="distributorName" placeholder="e.g. Apollo Pharmacy / MedPlus" required value={formData.distributorName || ''} onChange={handleChange} />
+                        </div>
+                    </div>
+
                     <div className="input-group">
                         <label>Batch ID (Printed on Pack)</label>
                         <div className="glass-input-wrapper">

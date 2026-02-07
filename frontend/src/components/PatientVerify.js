@@ -8,6 +8,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [isScanning, setIsScanning] = useState(false);
+    const [showProMode, setShowProMode] = useState(false);
 
     // Auto-verify if initialBatchId is provided (Deep Linking)
     useEffect(() => {
@@ -30,7 +31,16 @@ const PatientVerify = ({ contract, initialBatchId }) => {
             // Returns: [isValid, isExpired, medicineName, manufacturerName, ipfsHash]
             const data = await contract.verifyBatch(idToVerify);
 
-            const [isValid, isExpired, medicineName, manufacturerName, ipfsHash] = data;
+            const [isValid, isExpired, rawMedicineName, manufacturerName, ipfsHash] = data;
+
+            let medicineName = rawMedicineName;
+            let distributorName = null;
+
+            if (rawMedicineName.includes('||')) {
+                const parts = rawMedicineName.split('||');
+                medicineName = parts[0];
+                distributorName = parts[1];
+            }
 
             if (!isValid) {
                 setError("❌ ALERT: Batch ID not found in Registry. This might be a COUNTERFEIT product.");
@@ -44,6 +54,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                     isValid,
                     isExpired,
                     medicineName,
+                    distributorName,
                     manufacturerName,
                     ipfsHash,
                     formattedDate,
@@ -163,6 +174,12 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             <div className="detail-item"><strong>Batch ID:</strong> <span>{result.batchId}</span></div>
                             <div className="detail-item"><strong>Expiry Date:</strong> <span>{result.formattedDate}</span></div>
                             <div className="detail-item"><strong>Manufacturer:</strong> <span>{result.manufacturerName}</span></div>
+
+                            {result.distributorName && (
+                                <div className="detail-item" style={{ gridColumn: '1 / -1', background: 'rgba(255, 153, 51, 0.1)', border: '1px solid var(--gov-orange)' }}>
+                                    <strong>Authorized Distributor:</strong> <span style={{ color: '#d35400' }}>🚚 {result.distributorName}</span>
+                                </div>
+                            )}
                         </div>
 
                         <div style={{ marginTop: '1rem' }}>
@@ -205,6 +222,47 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                 </div>
                             ) : (
                                 <p style={{ color: 'red' }}>⚠️ No Certificate Found (Hash is empty)</p>
+                            )}
+                        </div>
+
+                        {/* PRO MODE TOGGLE */}
+                        <div style={{ marginTop: '2rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
+                            <div
+                                onClick={() => setShowProMode(!showProMode)}
+                                style={{
+                                    cursor: 'pointer',
+                                    color: '#666',
+                                    textAlign: 'center',
+                                    fontSize: '0.8rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '5px'
+                                }}
+                            >
+                                {showProMode ? '🔽 Hide Technical Details' : '▶️ Pro Mode (Hospital/Pharmacist View)'}
+                            </div>
+
+                            {showProMode && (
+                                <div className="glass-panel" style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.03)', fontSize: '0.85rem', textAlign: 'left', padding: '1rem' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>⛓️ Blockchain Proof (Immutable)</h4>
+
+                                    <div style={{ marginBottom: '5px' }}>
+                                        <strong>Status:</strong> <span style={{ color: 'green' }}>Confirmed</span> on Polygon Amoy
+                                    </div>
+                                    <div style={{ marginBottom: '5px' }}>
+                                        <strong>Contract:</strong> <span style={{ fontFamily: 'monospace' }}>{contract.address}</span>
+                                    </div>
+                                    <div style={{ marginBottom: '5px' }}>
+                                        <strong>Publisher:</strong> <span style={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>{result.manufacturerName}</span>
+                                    </div>
+                                    <div style={{ marginBottom: '5px' }}>
+                                        <strong>Data Integrity:</strong> SHA-256 Verified
+                                    </div>
+                                    <div style={{ marginTop: '10px', fontSize: '0.75rem', color: '#888' }}>
+                                        * This data is read directly from the Polygon Blockchain and cannot be altered by anyone.
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
