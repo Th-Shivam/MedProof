@@ -84,27 +84,37 @@ const ManufacturerDashboard = ({ contract, account }) => {
                     <h2>🏭 Manufacturer Dashboard</h2>
                     <p>Register new medicine batches on the blockchain.</p>
                 </div>
-                
+
                 <form onSubmit={registerBatch} className="glass-form">
                     <div className="input-group">
                         <label>Medicine Name</label>
-                        <input className="glass-input" type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required onChange={handleChange} />
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input" type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required value={formData.medicineName} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="input-group">
                         <label>Batch ID (Printed on Pack)</label>
-                        <input className="glass-input" type="text" name="batchId" placeholder="e.g. BATCH-001" required onChange={handleChange} />
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input" type="text" name="batchId" placeholder="e.g. BATCH-001" required value={formData.batchId} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="input-group">
                         <label>Manufacturer Name</label>
-                        <input className="glass-input" type="text" name="manufacturerName" placeholder="e.g. HealthCorp India" required onChange={handleChange} />
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input" type="text" name="manufacturerName" placeholder="e.g. HealthCorp India" required value={formData.manufacturerName} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="input-group">
                         <label>Expiry Date</label>
-                        <input className="glass-input" type="date" name="expiryDate" required onChange={handleChange} />
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input" type="date" name="expiryDate" required value={formData.expiryDate} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="input-group">
                         <label>Certificate of Analysis (Lab Report)</label>
-                        <input className="glass-input file-input" type="file" required onChange={handleFileChange} />
+                        <div className="glass-input-wrapper">
+                            <input className="glass-input file-input" type="file" required onChange={handleFileChange} />
+                        </div>
                     </div>
 
                     <button type="submit" disabled={loading} className="glass-btn submit-btn">

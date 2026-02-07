@@ -165,14 +165,48 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             <div className="detail-item"><strong>Manufacturer:</strong> <span>{result.manufacturerName}</span></div>
                         </div>
 
-                        <a
-                            href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="view-cert-btn"
-                        >
-                            📄 View Quality Certificate
-                        </a>
+                        <div style={{ marginTop: '1rem' }}>
+                            {result.ipfsHash ? (
+                                <div style={{ textAlign: 'center' }}>
+                                    <p style={{ marginBottom: '10px', fontWeight: '600', color: 'var(--gov-blue)' }}>📄 View Quality Certificate:</p>
+                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                        <a
+                                            href={`https://ipfs.io/ipfs/${result.ipfsHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="glass-btn view-cert-btn"
+                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
+                                        >
+                                            Mirror 1 (Official)
+                                        </a>
+                                        <a
+                                            href={`https://dweb.link/ipfs/${result.ipfsHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="glass-btn view-cert-btn"
+                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
+                                        >
+                                            Mirror 2 (Fast)
+                                        </a>
+                                        <a
+                                            href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="glass-btn view-cert-btn"
+                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
+                                        >
+                                            Mirror 3 (Pinata)
+                                        </a>
+                                    </div>
+                                    <p style={{ fontSize: '0.7rem', color: '#999', marginTop: '10px' }}>
+                                        IPFS Hash: {result.ipfsHash} <br />
+                                        (If one link is slow, try another)
+                                    </p>
+                                </div>
+                            ) : (
+                                <p style={{ color: 'red' }}>⚠️ No Certificate Found (Hash is empty)</p>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

@@ -1,24 +1,35 @@
-/* NIC / Gov.in Standard Styling */
+@import './Theme.css';
 
-/* Top Strip */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NIC / Gov.in Standard Styling */
 .gov-top-strip {
-  background-color: #333333;
+  background-color: #1a1a1a;
   color: #cccccc;
   font-size: 0.75rem;
-  padding: 6px 0;
-  border-bottom: 1px solid #444;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
 }
 
 .header-strip-inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .gov-links a {
   color: #cccccc;
   text-decoration: none;
-  margin: 0 5px;
+  margin: 0 8px;
+  transition: color 0.2s;
 }
 
 .gov-links a:hover {
@@ -26,93 +37,67 @@
   text-decoration: underline;
 }
 
-.separator {
-  margin: 0 8px;
-  color: #666;
-}
-
-.gov-settings {
-  display: flex;
-  align-items: center;
-}
-
-.font-resize button {
-  background: none;
-  border: 1px solid #555;
-  color: white;
-  margin-left: 5px;
-  cursor: pointer;
-  padding: 2px 6px;
-  font-size: 0.7rem;
-}
-
-/* Main NIC Header */
 .nic-header {
-  background: white;
-  padding: 15px 0;
-  /* Use official gradient border often seen */
-  box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-inner-nic {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  gap: 15px;
-}
-
-.emblem-placeholder {
-  /* Mimics the visual weight of the Ashoka Pillar */
-  filter: grayscale(100%);
-  /* Often logos are monochrome or metallic */
-  opacity: 0.8;
+  gap: 1.5rem;
 }
 
 .ministry-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-left: 2px solid #ddd;
-  padding-left: 15px;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 1.5rem;
 }
 
 .gov-label {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #000;
-  line-height: 1.2;
-  text-transform: uppercase;
-  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gov-blue);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .ministry-label {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
   font-weight: 500;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.tech-logos {
-  text-align: right;
-  font-size: 0.85rem;
-  color: #666;
-  border: 1px solid #ddd;
-  padding: 5px 10px;
-  border-radius: 4px;
-}
-
-/* Gov Navigation Bar */
 .nic-navbar {
-  background: #002147;
-  /* Standard Gov Blue */
+  background: var(--gov-blue);
   border-top: 4px solid var(--gov-orange);
   border-bottom: 4px solid var(--gov-green);
   color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nic-navbar .gov-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .nic-navbar ul {
@@ -124,52 +109,48 @@
   align-items: center;
 }
 
-.nic-navbar li {
-  position: relative;
-}
-
 .nic-navbar a {
   display: block;
-  padding: 12px 20px;
-  color: white;
+  padding: 1rem 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .nic-navbar a:hover,
 .nic-navbar a.active {
   background: rgba(255, 255, 255, 0.15);
-  border-bottom: 3px solid white;
-  /* Active state usually has underline */
-  padding-bottom: 9px;
-  /* Compensate for border */
-}
-
-.right-align-btn {
-  margin-left: auto;
-  padding-right: 10px;
-}
-
-.login-btn-small {
-  background: var(--gov-orange);
-  border: none;
   color: white;
-  padding: 6px 15px;
-  border-radius: 2px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 0.85rem;
-  text-transform: uppercase;
+  border-bottom: 3px solid white;
+  padding-bottom: 13px;
+  /* Compensate border */
 }
 
-.login-btn-small:hover {
-  background: #e65100;
+.content-area {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Override App-header if it exists */
-.App-header {
-  display: none;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.App {
+  animation: fadeIn 0.5s ease-out;
 }

@@ -6,11 +6,13 @@ import WalletConnect from './components/WalletConnect';
 import ManufacturerDashboard from './components/ManufacturerDashboard';
 import PatientVerify from './components/PatientVerify';
 import LandingPage from './components/LandingPage';
+import Footer from './components/Footer';
 import './App.css';
 
 const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 function App() {
+    // ... (state lines 14-20) ...
     const [account, setAccount] = useState(null);
     const [provider, setProvider] = useState(null);
     const [signer, setSigner] = useState(null);
@@ -18,7 +20,27 @@ function App() {
     const [network, setNetwork] = useState(null);
     const [view, setView] = useState('consumer'); // 'consumer' or 'manufacturer'
     const [initialBatchId, setInitialBatchId] = useState(null);
+    const [isPublic, setIsPublic] = useState(false);
 
+    // Public RPC for Read-Only Access (Amoy Testnet)
+    const PUBLIC_RPC = "https://rpc-amoy.polygon.technology/";
+
+    const enterPublicMode = async () => {
+        try {
+            const publicProvider = new ethers.providers.JsonRpcProvider(PUBLIC_RPC);
+            const readOnlyContract = new ethers.Contract(CONTRACT_ADDRESS, MedRegistryABI.abi, publicProvider);
+
+            setProvider(publicProvider);
+            setContract(readOnlyContract);
+            setIsPublic(true);
+            setView('consumer');
+        } catch (error) {
+            console.error("Error entering public mode:", error);
+            alert("Could not connect to public network. Please try again later.");
+        }
+    };
+
+    // ... (connectWallet lines 22-85) ...
     const connectWallet = async () => {
         if (window.ethereum) {
             try {
@@ -75,6 +97,7 @@ function App() {
 
                 const medRegistryContract = new ethers.Contract(CONTRACT_ADDRESS, MedRegistryABI.abi, newSigner);
                 setContract(medRegistryContract);
+                setIsPublic(false); // Disable public mode if wallet connects
 
             } catch (error) {
                 console.error("Error connecting wallet:", error);
@@ -90,10 +113,12 @@ function App() {
         setSigner(null);
         setContract(null);
         setNetwork(null);
+        setIsPublic(false); // Ensure public mode is off on disconnect
         // Optional: clear local storage if you were persisting logic
     };
 
     useEffect(() => {
+        // Auto-connect wallet if previously connected
         if (window.ethereum && window.ethereum.selectedAddress) {
             connectWallet();
         }
@@ -105,15 +130,19 @@ function App() {
             if (parts.length > 1) {
                 const idFromUrl = parts[1];
                 setInitialBatchId(idFromUrl);
-                setView('consumer');
+
+                // If checking a URL, enter public mode immediately if no wallet
+                if (!account) {
+                    enterPublicMode();
+                }
             }
         }
-    }, []);
+    }, [account]);
 
     return (
         <div className="App">
-            {!account ? (
-                <LandingPage connectWallet={connectWallet} />
+            {!account && !isPublic ? (
+                <LandingPage connectWallet={connectWallet} enterPublicMode={enterPublicMode} />
             ) : (
                 <>
                     {/* Accessibility & Settings Top Strip */}
@@ -185,6 +214,7 @@ function App() {
                     </main>
                 </>
             )}
+            <Footer />
         </div>
     );
 }
