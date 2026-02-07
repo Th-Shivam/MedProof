@@ -28,10 +28,11 @@ const PatientVerify = ({ contract, initialBatchId }) => {
         setResult(null);
 
         try {
-            // Returns: [isValid, isExpired, medicineName, manufacturerName, ipfsHash]
+            // Returns: [isValid, isExpired, isRecalled, medicineName, manufacturerName, ipfsHash]
             const data = await contract.verifyBatch(idToVerify);
 
-            const [isValid, isExpired, rawMedicineName, manufacturerName, ipfsHash] = data;
+            // Destructure carefully based on contract return values
+            const [isValid, isExpired, isRecalled, rawMedicineName, manufacturerName, ipfsHash] = data;
 
             let medicineName = rawMedicineName;
             let distributorName = null;
@@ -43,7 +44,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
             }
 
             if (!isValid) {
-                setError("❌ ALERT: Batch ID not found in Registry. This might be a COUNTERFEIT product.");
+                setError("❌ VERIFICATION FAILED: Batch ID not found in the Decentralized Registry.");
             } else {
                 // Fetch full details to get the exact expiry date
                 const batchDetails = await contract.getBatch(idToVerify);
@@ -53,6 +54,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                 setResult({
                     isValid,
                     isExpired,
+                    isRecalled,
                     medicineName,
                     distributorName,
                     manufacturerName,
@@ -64,7 +66,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
 
         } catch (err) {
             console.error(err);
-            setError("Error connecting to blockchain.");
+            setError("Error connecting to Polygon Blockchain node.");
         } finally {
             setLoading(false);
         }
@@ -93,14 +95,13 @@ const PatientVerify = ({ contract, initialBatchId }) => {
 
     const handleError = (err) => {
         console.error(err);
-        // Don't show error to user immediately to avoid flickering, just log it
     };
 
     return (
         <div className="verify-container">
             <div className="glass-panel verify-card">
-                <h2>🕵️‍♀️ Consumer Verification</h2>
-                <p>Scan the QR code or enter the Batch ID manually to verify authenticity.</p>
+                <h2>🕵️‍♀️ Public Authenticity Verification</h2>
+                <p>Verify medicine legitimacy via the secure blockchain ledger.</p>
 
                 {/* Camera Scanner Section - Integrated into Glass UI */}
                 <div className="scan-controls" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
@@ -110,7 +111,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             onClick={() => setIsScanning(true)}
                             style={{ background: '#4f46e5', width: '100%', justifyContent: 'center' }}
                         >
-                            📸 Open Camera Scanner
+                            Activate Camera Scanner
                         </button>
                     ) : (
                         <button
@@ -118,7 +119,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             onClick={() => setIsScanning(false)}
                             style={{ background: '#dc2626', width: '100%', justifyContent: 'center' }}
                         >
-                            ❌ Close Camera
+                            Stop Scanning
                         </button>
                     )}
                 </div>
@@ -131,7 +132,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             onScan={handleScan}
                             style={{ width: '100%', borderRadius: '12px' }}
                         />
-                        <p style={{ color: 'white', marginTop: '10px', fontSize: '0.9rem' }}>Point camera at a MedProof QR Code...</p>
+                        <p style={{ color: 'white', marginTop: '10px', fontSize: '0.9rem' }}>Align QR Code within frame...</p>
                     </div>
                 )}
 
@@ -140,44 +141,50 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                         <input
                             className="glass-input"
                             type="text"
-                            placeholder="Enter Batch ID (e.g. BATCH-001)"
+                            placeholder="Input Batch Verification Code"
                             value={batchId}
                             onChange={(e) => setBatchId(e.target.value)}
                         />
                     </div>
                     <button className="glass-btn verify-btn" onClick={() => verifyBatch()} disabled={loading}>
-                        {loading ? 'Verifying...' : 'Verify Product'}
+                        {loading ? 'Querying Ledger...' : 'Verify Authenticity'}
                     </button>
                 </div>
 
                 {error && <div className="result-card error-card glass-panel" style={{ marginTop: '1.5rem' }}><h3>{error}</h3></div>}
 
                 {result && (
-                    <div className={`result-card glass-panel ${result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem' }}>
-                        {result.isExpired ? (
+                    <div className={`result-card glass-panel ${result.isRecalled ? 'recalled-card' : result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem', border: result.isRecalled ? '3px solid red' : '' }}>
+
+                        {result.isRecalled ? (
+                            <div className="status-header recalled" style={{ background: 'rgba(255, 0, 0, 0.1)', padding: '15px', borderRadius: '10px', border: '1px solid red' }}>
+                                <h3 style={{ color: 'red', fontSize: '1.5rem' }}>⛔ CRITICAL: BATCH RECALLED</h3>
+                                <p style={{ color: 'darkred', fontWeight: 'bold' }}>DO NOT CONSUME. This batch has been flagged as UNSAFE by the manufacturer.</p>
+                            </div>
+                        ) : result.isExpired ? (
                             <div className="status-header expired">
-                                <h3>⚠️ WARNING: Medicine Expired!</h3>
-                                <p>Do not consume this product.</p>
+                                <h3>⚠️ ALERT: EXPIRY DATE EXCEEDED</h3>
+                                <p>This product is no longer safe for consumption.</p>
                             </div>
                         ) : (
                             <div className="status-header valid">
-                                <h3>✅ AUTHENTIC & SAFE</h3>
+                                <h3>✅ VERIFIED AUTHENTIC</h3>
                                 <div className="trust-badges">
-                                    <span className="badge">✔ Blockchain Verified</span>
-                                    <span className="badge">✔ Manufacturer Licensed</span>
+                                    <span className="badge">✔ Blockchain Secured</span>
+                                    <span className="badge">✔ Manufacturer Signed</span>
                                 </div>
                             </div>
                         )}
 
-                        <div className="details-grid">
-                            <div className="detail-item"><strong>Medicine:</strong> <span>{result.medicineName}</span></div>
-                            <div className="detail-item"><strong>Batch ID:</strong> <span>{result.batchId}</span></div>
+                        <div className="details-grid" style={{ marginTop: '1.5rem' }}>
+                            <div className="detail-item"><strong>Medicine Name:</strong> <span>{result.medicineName}</span></div>
+                            <div className="detail-item"><strong>Batch UID:</strong> <span>{result.batchId}</span></div>
                             <div className="detail-item"><strong>Expiry Date:</strong> <span>{result.formattedDate}</span></div>
                             <div className="detail-item"><strong>Manufacturer:</strong> <span>{result.manufacturerName}</span></div>
 
                             {result.distributorName && (
                                 <div className="detail-item" style={{ gridColumn: '1 / -1', background: 'rgba(255, 153, 51, 0.1)', border: '1px solid var(--gov-orange)' }}>
-                                    <strong>Authorized Distributor:</strong> <span style={{ color: '#d35400' }}>🚚 {result.distributorName}</span>
+                                    <strong>Logistics Partner:</strong> <span style={{ color: '#d35400' }}>🚚 {result.distributorName}</span>
                                 </div>
                             )}
                         </div>
@@ -185,7 +192,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                         <div style={{ marginTop: '1rem' }}>
                             {result.ipfsHash ? (
                                 <div style={{ textAlign: 'center' }}>
-                                    <p style={{ marginBottom: '10px', fontWeight: '600', color: 'var(--gov-blue)' }}>📄 View Quality Certificate:</p>
+                                    <p style={{ marginBottom: '10px', fontWeight: '600', color: 'var(--gov-blue)' }}>📄 Quality Assurance Certificate (IPFS):</p>
                                     <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
                                         <a
                                             href={`https://ipfs.io/ipfs/${result.ipfsHash}`}
@@ -194,7 +201,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                             className="glass-btn view-cert-btn"
                                             style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
                                         >
-                                            Mirror 1 (Official)
+                                            Mirror 1
                                         </a>
                                         <a
                                             href={`https://dweb.link/ipfs/${result.ipfsHash}`}
@@ -203,25 +210,12 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                             className="glass-btn view-cert-btn"
                                             style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
                                         >
-                                            Mirror 2 (Fast)
-                                        </a>
-                                        <a
-                                            href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="glass-btn view-cert-btn"
-                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
-                                        >
-                                            Mirror 3 (Pinata)
+                                            Mirror 2
                                         </a>
                                     </div>
-                                    <p style={{ fontSize: '0.7rem', color: '#999', marginTop: '10px' }}>
-                                        IPFS Hash: {result.ipfsHash} <br />
-                                        (If one link is slow, try another)
-                                    </p>
                                 </div>
                             ) : (
-                                <p style={{ color: 'red' }}>⚠️ No Certificate Found (Hash is empty)</p>
+                                <p style={{ color: 'red' }}>⚠️ Certificate Hash Missing</p>
                             )}
                         </div>
 
@@ -240,27 +234,27 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                     gap: '5px'
                                 }}
                             >
-                                {showProMode ? '🔽 Hide Technical Details' : '▶️ Pro Mode (Hospital/Pharmacist View)'}
+                                {showProMode ? '🔽 Hide Technical Metadata' : '▶️ View Technical Proof (Hospital Mode)'}
                             </div>
 
                             {showProMode && (
                                 <div className="glass-panel" style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.03)', fontSize: '0.85rem', textAlign: 'left', padding: '1rem' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>⛓️ Blockchain Proof (Immutable)</h4>
+                                    <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>⛓️ On-Chain Proof</h4>
 
                                     <div style={{ marginBottom: '5px' }}>
-                                        <strong>Status:</strong> <span style={{ color: 'green' }}>Confirmed</span> on Polygon Amoy
+                                        <strong>Ledger Status:</strong> <span style={{ color: 'green' }}>Immutable / Finalized</span>
                                     </div>
                                     <div style={{ marginBottom: '5px' }}>
                                         <strong>Contract:</strong> <span style={{ fontFamily: 'monospace' }}>{contract.address}</span>
                                     </div>
                                     <div style={{ marginBottom: '5px' }}>
-                                        <strong>Publisher:</strong> <span style={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>{result.manufacturerName}</span>
+                                        <strong>Signer:</strong> <span style={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>{result.manufacturerName}</span>
                                     </div>
                                     <div style={{ marginBottom: '5px' }}>
-                                        <strong>Data Integrity:</strong> SHA-256 Verified
+                                        <strong>Integrity Check:</strong> PASSED
                                     </div>
                                     <div style={{ marginTop: '10px', fontSize: '0.75rem', color: '#888' }}>
-                                        * This data is read directly from the Polygon Blockchain and cannot be altered by anyone.
+                                        * Data retrieved directly from Polygon Network.
                                     </div>
                                 </div>
                             )}

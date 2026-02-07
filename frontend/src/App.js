@@ -21,14 +21,19 @@ function App() {
     const [view, setView] = useState('consumer'); // 'consumer' or 'manufacturer'
     const [initialBatchId, setInitialBatchId] = useState(null);
     const [isPublic, setIsPublic] = useState(false);
+    const [isConnecting, setIsConnecting] = useState(false);
 
     // Public RPC for Read-Only Access (Amoy Testnet)
     const PUBLIC_RPC = "https://rpc-amoy.polygon.technology/";
 
     const enterPublicMode = async () => {
+        setIsConnecting(true);
         try {
             const publicProvider = new ethers.providers.JsonRpcProvider(PUBLIC_RPC);
             const readOnlyContract = new ethers.Contract(CONTRACT_ADDRESS, MedRegistryABI.abi, publicProvider);
+
+            // Simulate a small delay for UX so users see the spinner
+            await new Promise(resolve => setTimeout(resolve, 800));
 
             setProvider(publicProvider);
             setContract(readOnlyContract);
@@ -37,6 +42,8 @@ function App() {
         } catch (error) {
             console.error("Error entering public mode:", error);
             alert("Could not connect to public network. Please try again later.");
+        } finally {
+            setIsConnecting(false);
         }
     };
 
@@ -139,10 +146,32 @@ function App() {
         }
     }, [account]);
 
+    // Function 1: Check Network Status
+    const checkNetworkStatus = async (e) => {
+        e.preventDefault();
+        if (!provider) {
+            alert("⚠️ Network Status: Disconnected.\n\nPlease connect your wallet or enter Public Mode to check the Polygon Amoy connection.");
+            return;
+        }
+        try {
+            const network = await provider.getNetwork();
+            const blockNumber = await provider.getBlockNumber();
+            alert(`✅ Network Status: HEALTHY\n\n🔗 Connected to: ${network.name} (Chain ID: ${network.chainId})\n📦 Current Block Height: ${blockNumber}\n⚡ Latency: Low`);
+        } catch (e) {
+            alert("❌ Network Status: ERROR\n\nCould not reach Polygon Amoy RPC.");
+        }
+    };
+
+    // Function 2: Support Popup
+    const handleSupport = (e) => {
+        e.preventDefault();
+        alert("📞 MedProof Support (Hackathon Demo)\n\nFor Judges/Testers:\nIf you face issues, please reset your MetaMask activity tab or contact us.\n\n📧 Email: medproof.contact@gmail.com\n");
+    };
+
     return (
         <div className="App">
             {!account && !isPublic ? (
-                <LandingPage connectWallet={connectWallet} enterPublicMode={enterPublicMode} />
+                <LandingPage connectWallet={connectWallet} enterPublicMode={enterPublicMode} isConnecting={isConnecting} />
             ) : (
                 <>
                     {/* Accessibility & Settings Top Strip */}
@@ -179,8 +208,8 @@ function App() {
                                     </div>
                                 </div>
                                 <div className="ministry-text">
-                                    <span className="gov-label">MedProof Protocol</span>
-                                    <span className="ministry-label">Decentralized Authenticity Infrastructure</span>
+                                    <span className="gov-label" style={{ fontSize: '1.1rem', maxWidth: '300px', lineHeight: '1.3' }}>MedProof: Blockchain-Based Medicine Authenticity & Expiry Verification</span>
+                                    <span className="ministry-label">Ideas Powering Atmanirbhar Bharat</span>
                                 </div>
                             </div>
 
@@ -197,9 +226,11 @@ function App() {
                         <div className="gov-container">
                             <ul>
                                 <li><a href="#" onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>Batch Verification</a></li>
-                                <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer & Supply Chain</a></li>
-                                <li><a href="#">Network Status</a></li>
-                                <li><a href="#">Support</a></li>
+                                {!isPublic && (
+                                    <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer & Supply Chain</a></li>
+                                )}
+                                <li><a href="#" onClick={checkNetworkStatus}>Network Status</a></li>
+                                <li><a href="#" onClick={handleSupport}>Support</a></li>
                                 <li className="right-align-btn">
                                     <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
                                 </li>

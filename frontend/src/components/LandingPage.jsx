@@ -1,162 +1,135 @@
 import React from 'react';
-import Spline from '@splinetool/react-spline';
 import './LandingPage.css';
 
-const LandingPage = ({ connectWallet }) => {
+const LandingPage = ({ connectWallet, enterPublicMode, isConnecting }) => {
     return (
         <div className="landing-container">
-            {/* Updates Marquee */}
+            {/* 1. Cyber Marquee */}
             <div className="updates-marquee">
                 <div className="marquee-content">
-                    <span>📢 <strong>LATEST UPDATES:</strong> MedProof network live on Polygon Amoy Testnet. &nbsp;&nbsp; | &nbsp;&nbsp; 🏥 Over 1,000 batches verified successfully. &nbsp;&nbsp; | &nbsp;&nbsp; 🛡️ Smart Contracts audited and secure.</span>
+                    <span>
+                        <strong>MedProof:</strong> Blockchain-Based Medicine Authenticity & Expiry Verification. &nbsp;&nbsp; /// &nbsp;&nbsp;
+                        <strong>Atmanirbhar Bharat:</strong> Building India's Trust Infrastructure. &nbsp;&nbsp; /// &nbsp;&nbsp;
+                        <strong>Team Rooted:</strong> Theme-3 (MedTech) Solution.
+                    </span>
                 </div>
             </div>
 
-            {/* Hero Section - Banner Slider Style */}
+            {/* 2. Holographic Hero Section */}
             <section className="hero-section">
-                <div className="banner-slider">
-                    <div className="banner-slide">
-                        <div className="banner-content">
-                            <span className="banner-tagline">Official Release v1.0</span>
-                            <h1 className="title">Stop Counterfeit Medicines</h1>
-                            <p className="subtitle">Verify absolute authenticity with the power of Blockchain Technology.</p>
-                            <button className="connect-wallet-btn" onClick={connectWallet}>
-                                Access Platform &gt;
+                <div className="hero-content-wrapper">
+                    {/* Left: Text Content */}
+                    <div className="hero-text-block">
+                        <span className="hero-tag">THEME ID: TH03 (MEDTECH) | TEAM: ROOTED</span>
+                        <h1 className="hero-title">Ideas Powering Atmanirbhar Bharat</h1>
+                        <p className="hero-subtitle">
+                            A Decentralized Authenticity Protocol. Bridging the physical medicine box to an immutable digital record to protect the "Pharmacy of the World".
+                        </p>
+
+                        <div className="hero-btn-group">
+                            <button className="primary-cta" onClick={enterPublicMode} disabled={isConnecting}>
+                                {isConnecting ? (
+                                    <>
+                                        <div className="spinner-border" style={{ width: '20px', height: '20px', border: '3px solid rgba(0,0,0,0.3)', borderTop: '3px solid black', borderRadius: '50%', animation: 'spin 1s linear infinite', marginRight: '10px' }}></div>
+                                        <span>INITIALIZING...</span>
+                                    </>
+                                ) : (
+                                    <>🔍 Public Scanner</>
+                                )}
+                            </button>
+                            <button className="secondary-cta" onClick={connectWallet}>
+                                Manufacturer Node
                             </button>
                         </div>
-                        <div className="banner-graphic">
-                            <div className="graphic-placeholder">
-                                🛡️
-                            </div>
-                        </div>
                     </div>
 
-                    {/* Visual Dots */}
-                    <div className="slider-dots">
-                        <div className="dot active"></div>
-                        <div className="dot"></div>
-                        <div className="dot"></div>
-                        <div className="dot"></div>
+                    {/* Right: 3D Visualization */}
+                    <div className="hero-graphic-container">
+                        <div className="cyber-ring"></div>
+                        <div className="cyber-pill">💊</div>
                     </div>
                 </div>
             </section>
 
-            {/* Information Grid */}
-            <section className="info-grid-section">
-                <div className="gov-container">
-                    <div className="row info-row">
-                        {/* What is MedProof */}
-                        <div className="col-md-8 info-card">
-                            <h2 className="section-title">About the Platform</h2>
-                            <div className="info-content">
-                                <p className="section-text">
-                                    <strong>MedProof</strong> is a cutting-edge open solution designed to combat counterfeit medicines.
-                                    Utilizing the immutable nature of Blockchain technology (Polygon Network), we authenticate every step of the pharmaceutical supply chain.
-                                </p>
-                                <p className="section-text">
-                                    From the manufacturing plant to your local pharmacy, every movement is recorded. This ensures that the medicine you consume is
-                                    <strong>100% Authentic</strong> and safe. Building trust through cryptography.
-                                </p>
-                            </div>
-                        </div>
+            {/* 3. Glassmorphism Info Grid */}
+            <section className="info-section">
+                <div className="info-cards-container">
+                    {/* Problem/Solution */}
+                    <div className="glass-card main-info">
+                        <h2>The Problem: "Pharmacy of the World" at Risk</h2>
+                        <p>
+                            India is the global leader in generics, yet our reputation is threatened by a flood of counterfeit and expired medicines.
+                            Rural patients often cannot distinguish between a fake strip of antibiotics and a real one.
+                        </p>
+                        <p>
+                            <strong style={{ color: '#00f2ea' }}>The Solution:</strong> MedProof acts as a "Digital Notary", ensuring that if the blockchain says "Expired", the medicine is unsafe—regardless of the printed label.
+                        </p>
+                    </div>
 
-                        {/* Quick Stats/Notice Board style */}
-                        <div className="col-md-4 notice-board-wrapper">
-                            <div className="notice-board">
-                                <h3>📊 Platform Statistics</h3>
-                                <ul>
-                                    <li><strong>Registered Manufacturers:</strong> <span className="stat-val">120+</span></li>
-                                    <li><strong>Batches Verified:</strong> <span className="stat-val">50k+</span></li>
-                                    <li><strong>Trust Score:</strong> <span className="stat-val">100%</span></li>
-                                    <li><strong>Network:</strong> <span className="stat-val">Polygon</span></li>
-                                </ul>
-                                <div className="helpline">
-                                    <p><strong>Dev Support:</strong><br />contact@medproof.io</p>
-                                </div>
-                            </div>
+                    {/* Tech Specs */}
+                    <div className="glass-card tech-info">
+                        <h2>⚙️ System Architecture</h2>
+                        <ul className="tech-list">
+                            <li><span>Network</span> <span className="tech-val">Polygon Amoy</span></li>
+                            <li><span>Storage</span> <span className="tech-val">IPFS (Pinata)</span></li>
+                            <li><span>Contract</span> <span className="tech-val">OpenZeppelin v0.8.20</span></li>
+                            <li><span>Security</span> <span className="tech-val">SHA-256 Hash</span></li>
+                        </ul>
+                        <div style={{ marginTop: '20px', fontSize: '0.8rem', opacity: 0.6, letterSpacing: '1px' }}>
+                            // POWERED_BY_TEAM_ROOTED
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* How It Works - Step by Step */}
-            <section className="how-it-works-section">
-                <div className="gov-container">
-                    <h2 className="section-title center">How to Use the Portal</h2>
-                    <div className="steps-container">
-                        <div className="step-card">
-                            <div className="step-number">1</div>
-                            <h4>Connect Wallet</h4>
-                            <p>Click on 'Login' and connect your Digital Identity (Web3 Wallet) to access the secure portal.</p>
-                        </div>
-                        <div className="step-arrow">➜</div>
-                        <div className="step-card">
-                            <div className="step-number">2</div>
-                            <h4>Select Role</h4>
-                            <p>Choose <strong>'Verify Medicine'</strong> for citizens or <strong>'Manufacturer Login'</strong> for pharma companies.</p>
-                        </div>
-                        <div className="step-arrow">➜</div>
-                        <div className="step-card">
-                            <div className="step-number">3</div>
-                            <h4>Verify/Register</h4>
-                            <p>Manufacturers upload batch data. Citizens enter Batch ID to get instant proof of authenticity.</p>
-                        </div>
+            {/* 4. Glowing Workflow Steps */}
+            <section className="workflow-section">
+                <h2 className="section-head-center">Protocol Workflow</h2>
+                <div className="steps-row">
+                    <div className="step-box">
+                        <span className="step-num">01</span>
+                        <h4>Source of Truth</h4>
+                        <p>Manufacturers (e.g. Cipla, Sun Pharma) input Batch ID & CoA. A 'Batch Hash' is minted to the Registry.</p>
+                    </div>
+                    <div className="step-box">
+                        <span className="step-num">02</span>
+                        <h4>Immutable Link</h4>
+                        <p>Metadata includes "Intended Distributor" and IPFS Hash, creating a digital link fraudsters cannot guess.</p>
+                    </div>
+                    <div className="step-box">
+                        <span className="step-num">03</span>
+                        <h4>The "Trust Check"</h4>
+                        <p>Patients scan the QR code. The Smart Contract instantly validates Expiry, Recalls, and Authenticity.</p>
                     </div>
                 </div>
             </section>
 
-            {/* Key Services/Features */}
-            <section className="features-section">
-                <h2 className="section-title center" style={{ width: '100%', textAlign: 'center' }}>Digital Services</h2>
-                <div className="features-grid">
-                    <div className="feature-card">
-                        <div className="icon">📜</div>
-                        <h3>Digital Ledger</h3>
-                        <p>Publicly verifiable immutable ledger of all pharmaceutical batches for transparency.</p>
+            {/* 5. Neon Features */}
+            <section className="info-section" style={{ background: 'transparent' }}>
+                <h2 className="section-head-center">Project Impact Pillars</h2>
+                <div className="features-container">
+                    <div className="feature-tile">
+                        <div className="f-icon">🛡️</div>
+                        <h3>National Security</h3>
+                        <p style={{ color: '#a0a0a0' }}>Reduces dependency on foreign centralized servers. Protects India's ₹3 Lakh Crore Pharma Industry from reputation damage.</p>
                     </div>
-                    <div className="feature-card">
-                        <div className="icon">✅</div>
-                        <h3>Instant Verification</h3>
-                        <p>Get instant "Valid" or "Expired" status with production & expiry details from the blockchain.</p>
+                    <div className="feature-tile">
+                        <div className="f-icon">🤝</div>
+                        <h3>Economic Trust</h3>
+                        <p style={{ color: '#a0a0a0' }}>Restores faith in the "Made in India" label by eliminating the possibility of undetected counterfeits entering the supply chain.</p>
                     </div>
-                    <div className="feature-card">
-                        <div className="icon">🏭</div>
-                        <h3>Manufacturer Direct</h3>
-                        <p>Direct linkage between pharmaceutical giants and the end consumer to stop counterfeiting.</p>
+                    <div className="feature-tile">
+                        <div className="f-icon">🌾</div>
+                        <h3>Rural Empowerment</h3>
+                        <p style={{ color: '#a0a0a0' }}>Democratizes health safety. Allows anyone with a basic smartphone to verify medicine quality instantly, democratizing health safety.</p>
                     </div>
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="landing-footer">
-                <div className="gov-container">
-                    <div className="footer-links">
-                        <div className="link-group">
-                            <h5>Quick Links</h5>
-                            <a href="#">Home</a>
-                            <a href="#">About Project</a>
-                            <a href="#">Github</a>
-                            <a href="#">Docs</a>
-                        </div>
-                        <div className="link-group">
-                            <h5>Legal</h5>
-                            <a href="#">Privacy Policy</a>
-                            <a href="#">Terms of Use</a>
-                            <a href="#">Smart Contract License</a>
-                        </div>
-                        <div className="link-group">
-                            <h5>Community</h5>
-                            <a href="#">Discord</a>
-                            <a href="#">Twitter</a>
-                            <a href="#">DAO</a>
-                        </div>
-                    </div>
-                    <div className="copyright">
-                        <p>&copy; 2024 MedProof. Open Source Blockchain Project.</p>
-                        <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Decentralized Authenticity Protocol.</p>
-                    </div>
-                </div>
-            </footer>
+            {/* Inline Keyframes for Spinner */}
+            <style>{`
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            `}</style>
         </div>
     );
 };

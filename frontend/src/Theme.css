@@ -32,15 +32,19 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     -webkit-font-smoothing: antialiased;
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+    background:
+        radial-gradient(at 0% 0%, rgba(0, 33, 71, 0.15) 0, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 153, 51, 0.1) 0, transparent 50%),
+        linear-gradient(to bottom right, #f8f9fa, #e9ecef);
     background-attachment: fixed;
     min-height: 100vh;
 }
 
-h1, h2, h3, h4, .title {
+h1,
+h2,
+h3,
+h4,
+.title {
     font-family: 'Poppins', sans-serif;
     color: var(--gov-blue);
 }
@@ -76,7 +80,8 @@ h1, h2, h3, h4, .title {
     font-size: 1rem;
     color: var(--text-primary);
     transition: all 0.2s;
-    box-sizing: border-box; /* Important for padding */
+    box-sizing: border-box;
+    /* Important for padding */
 }
 
 .glass-input:focus {
@@ -165,7 +170,7 @@ h1, h2, h3, h4, .title {
     background: rgba(255, 255, 255, 0.5);
     padding: 10px;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .detail-item strong {
@@ -203,8 +208,15 @@ h1, h2, h3, h4, .title {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .verify-container {
