@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Theme.css';
+import '../../assets/css/Theme.css';
 
 const WalletConnect = ({ account, network, connectWallet, disconnectWallet }) => {
     const [isHovered, setIsHovered] = useState(false);

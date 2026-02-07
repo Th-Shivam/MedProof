@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import MedRegistryABI from './contracts/MedRegistry.json'; // Updated ABI
 
-import WalletConnect from './components/WalletConnect';
-import ManufacturerDashboard from './components/ManufacturerDashboard';
-import PatientVerify from './components/PatientVerify';
-import LandingPage from './components/LandingPage';
-import Footer from './components/Footer';
-import './App.css';
+import WalletConnect from './components/common/WalletConnect';
+import ManufacturerDashboard from './components/dashboard/ManufacturerDashboard';
+import PatientVerify from './components/verify/PatientVerify';
+import LandingPage from './components/landing/LandingPage';
+import Footer from './components/common/Footer';
+import './assets/css/App.css';
 
 const CONTRACT_ADDRESS = "0x8a0f815a279eD8e74406b021d8e2e6cb02937767"; // Deployed to Amoy
 

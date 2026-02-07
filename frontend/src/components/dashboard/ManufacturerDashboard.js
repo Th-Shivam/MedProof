@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Updated import for v3+
-import '../Theme.css';
+import '../../assets/css/Theme.css';
 
 const ManufacturerDashboard = ({ contract, account }) => {
     const [formData, setFormData] = useState({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../Theme.css';
+import '../../assets/css/Theme.css';
 import QrScanner from 'react-qr-scanner';
 
 const PatientVerify = ({ contract, initialBatchId }) => {
