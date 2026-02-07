@@ -29,6 +29,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
 
         try {
             // Returns: [isValid, isExpired, isRecalled, medicineName, manufacturerName, ipfsHash]
+            // Returns: [isValid, isExpired, isRecalled, medicineName, manufacturerName, ipfsHash]
             const data = await contract.verifyBatch(idToVerify);
 
             // Destructure carefully based on contract return values
@@ -54,6 +55,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                 setResult({
                     isValid,
                     isExpired,
+                    isRecalled,
                     isRecalled,
                     medicineName,
                     distributorName,

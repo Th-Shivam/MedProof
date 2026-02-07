@@ -9,7 +9,7 @@ import LandingPage from './components/LandingPage';
 import Footer from './components/Footer';
 import './App.css';
 
-const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = "0x8a0f815a279eD8e74406b021d8e2e6cb02937767"; // Deployed to Amoy
 
 function App() {
     // ... (state lines 14-20) ...

@@ -29,6 +29,23 @@ const ManufacturerDashboard = ({ contract, account }) => {
         setFile(e.target.files[0]);
     };
 
+    const handleRecallSubmit = async () => {
+        if (!contract || !recallData.batchId || !recallData.reason) return;
+        try {
+            setLoading(true);
+            setStatus('⚠️ Initiating Batch Recall on Blockchain...');
+            const tx = await contract.recallBatch(recallData.batchId, recallData.reason);
+            await tx.wait();
+            setStatus('🚨 BATCH RECALLED SUCCESSFULLY. It is now flagged as dangerous.');
+            setRecallData({ batchId: '', reason: '' });
+        } catch (error) {
+            console.error(error);
+            setStatus(`❌ Error: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const registerBatch = async (e) => {
         e.preventDefault();
         if (!contract) return;

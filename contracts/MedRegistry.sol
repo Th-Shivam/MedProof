@@ -16,6 +16,7 @@ contract MedRegistry is AccessControl {
         address registrant;      // Wallet address of the manufacturer
         uint256 registrationTime;
         bool exists;
+        bool isRecalled;     // KILL SWITCH: True if batch is unsafe
     }
 
     // Mapping from BatchID to the Batch Data
@@ -28,6 +29,12 @@ contract MedRegistry is AccessControl {
         string manufacturerName,
         uint256 expiryDate,
         address indexed registrant
+    );
+
+    event BatchRecalled(
+        string batchId,
+        string reason,
+        address indexed manufacturer
     );
 
     constructor() {
@@ -62,7 +69,8 @@ contract MedRegistry is AccessControl {
             expiryDate,
             msg.sender,
             block.timestamp,
-            true
+            true,
+            false // isRecalled starts as false
         );
         _allBatchIds.push(batchId);
 
@@ -75,6 +83,15 @@ contract MedRegistry is AccessControl {
         );
     }
 
+    function recallBatch(string memory batchId, string memory reason) public {
+        require(_batches[batchId].exists, "Batch does not exist.");
+        require(_batches[batchId].registrant == msg.sender, "Only the manufacturer can recall this batch.");
+        
+        _batches[batchId].isRecalled = true;
+        
+        emit BatchRecalled(batchId, reason, msg.sender);
+    }
+
     function getBatch(string memory batchId) public view returns (MedicineBatch memory) {
         return _batches[batchId];
     }
@@ -82,7 +99,8 @@ contract MedRegistry is AccessControl {
     // Helper to check validity status in one call
     function verifyBatch(string memory batchId) public view returns (
         bool isValid, 
-        bool isExpired, 
+        bool isExpired,
+        bool isRecalled,
         string memory medicineName,
         string memory manufacturerName, 
         string memory ipfsHash
@@ -90,14 +108,15 @@ contract MedRegistry is AccessControl {
         MedicineBatch memory batch = _batches[batchId];
         
         if (!batch.exists) {
-            return (false, false, "", "", "");
+            return (false, false, false, "", "", "");
         }
 
         bool expired = block.timestamp > batch.expiryDate;
         
         return (
             true, 
-            expired, 
+            expired,
+            batch.isRecalled,
             batch.medicineName, 
             batch.manufacturerName, 
             batch.ipfsHash
