@@ -15,12 +15,34 @@ const ManufacturerDashboard = ({ contract, account }) => {
     const [status, setStatus] = useState('');
     const [generatedQr, setGeneratedQr] = useState(null);
 
+    const [recallData, setRecallData] = useState({
+        batchId: '',
+        reason: ''
+    });
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
+    };
+
+    const handleRecallSubmit = async () => {
+        if (!contract || !recallData.batchId || !recallData.reason) return;
+        try {
+            setLoading(true);
+            setStatus('⚠️ Initiating Batch Recall on Blockchain...');
+            const tx = await contract.recallBatch(recallData.batchId, recallData.reason);
+            await tx.wait();
+            setStatus('🚨 BATCH RECALLED SUCCESSFULLY. It is now flagged as dangerous.');
+            setRecallData({ batchId: '', reason: '' });
+        } catch (error) {
+            console.error(error);
+            setStatus(`❌ Error: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const registerBatch = async (e) => {
@@ -146,6 +168,49 @@ const ManufacturerDashboard = ({ contract, account }) => {
                         <p className="qr-url">Verification URL: <span>{generatedQr}</span></p>
                     </div>
                 )}
+            </div>
+
+            {/* RECALL SECTION (KILL SWITCH) */}
+            <div className="glass-panel" style={{ marginTop: '2rem', border: '1px solid rgba(255, 0, 0, 0.3)', background: 'rgba(255, 0, 0, 0.05)', padding: '20px' }}>
+                <h3 style={{ color: '#e74c3c', marginTop: 0 }}>🚨 Emergency Batch Recall</h3>
+                <p style={{ fontSize: '0.9rem', marginBottom: '1rem', color: '#c0392b' }}>
+                    Use this tool to immediately flag a batch as unsafe. This will trigger a "DANGER" warning for all patients.
+                </p>
+
+                <div className="input-group">
+                    <label style={{ color: '#c0392b' }}>Batch ID to Recall</label>
+                    <div className="glass-input-wrapper" style={{ borderColor: '#e74c3c' }}>
+                        <input
+                            className="glass-input"
+                            type="text"
+                            placeholder="e.g. BATCH-001"
+                            value={recallData.batchId}
+                            onChange={(e) => setRecallData({ ...recallData, batchId: e.target.value })}
+                        />
+                    </div>
+                </div>
+
+                <div className="input-group">
+                    <label style={{ color: '#c0392b' }}>Reason for Recall</label>
+                    <div className="glass-input-wrapper" style={{ borderColor: '#e74c3c' }}>
+                        <input
+                            className="glass-input"
+                            type="text"
+                            placeholder="e.g. Failed Stability Test / Contamination"
+                            value={recallData.reason}
+                            onChange={(e) => setRecallData({ ...recallData, reason: e.target.value })}
+                        />
+                    </div>
+                </div>
+
+                <button
+                    onClick={handleRecallSubmit}
+                    disabled={loading || !recallData.batchId}
+                    className="glass-btn"
+                    style={{ background: '#e74c3c', width: '100%', marginTop: '10px', fontWeight: 'bold' }}
+                >
+                    {loading ? 'Processing Recall...' : '⚠️ RECALL BATCH PERMANENTLY'}
+                </button>
             </div>
         </div>
     );
