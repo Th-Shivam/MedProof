@@ -11,6 +11,10 @@ package-lock.json
 backend/.env
 frontend/.env
 
+
+# Firebase cache
+.firebase/
+
 # Build Artifacts
 build/
 dist/

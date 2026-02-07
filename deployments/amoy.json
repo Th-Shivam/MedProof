@@ -1,10 +1,10 @@
 {
   "amoy": {
     "MedRegistry": {
-      "address": "0xA21E9CefA9c72dDAE6aE914191b7F00B203bbEd1",
-      "transactionHash": "0xed99461c71c103be7371e0837a2049dbc1af3ec9eef8cd71693f2723b3b85982",
+      "address": "0x8a0f815a279eD8e74406b021d8e2e6cb02937767",
+      "transactionHash": "0x1fe6b9e9eeb5d8f0e37c0f2ee5a8211a110b2bf2da2122c3324cd4930b3de617",
       "deployer": "0x1cb676ccC800c105cF9Ccb286BFe108cC4cA0864",
-      "timestamp": "2026-01-25T14:36:42.159Z"
+      "timestamp": "2026-02-07T17:49:07.842Z"
     }
   }
 }

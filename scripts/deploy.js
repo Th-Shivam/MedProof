@@ -2,36 +2,56 @@
 
 const hre = require("hardhat");
 const fs = require('fs');
+const path = require('path');
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
-  
-  console.log("Deploying MedProof contracts with account:", deployer.address);
-  
-  const balance = await deployer.getBalance();
-  console.log("Account balance:", balance.toString());
+  console.log("Starting deployment script...");
 
-  const MedRegistryFactory = await hre.ethers.getContractFactory("MedRegistry");
-  const medRegistry = await MedRegistryFactory.deploy();
-  
-  await medRegistry.deployed();
-
-  console.log("MedRegistry deployed to:", medRegistry.address);
-  console.log("Transaction hash:", medRegistry.deployTransaction.hash);
-
-  // Save deployment info
-  const deploymentInfo = {
-    amoy: {
-      MedRegistry: {
-        address: medRegistry.address,
-        transactionHash: medRegistry.deployTransaction.hash,
-        deployer: deployer.address,
-        timestamp: new Date().toISOString()
-      }
+  try {
+    const [deployer] = await hre.ethers.getSigners();
+    if (!deployer) {
+      throw new Error("No deployer account found!");
     }
-  };
-  fs.writeFileSync('./deployments/amoy.json', JSON.stringify(deploymentInfo, null, 2));
-  console.log("Deployment info saved to: ./deployments/amoy.json");
+
+    console.log("Deploying MedProof contracts with account:", deployer.address);
+
+    const balance = await deployer.getBalance();
+    console.log("Account balance:", balance.toString());
+
+    const MedRegistryFactory = await hre.ethers.getContractFactory("MedRegistry");
+    console.log("Deploying MedRegistry...");
+
+    const medRegistry = await MedRegistryFactory.deploy();
+    console.log("Deployment transaction sent:", medRegistry.deployTransaction.hash);
+
+    await medRegistry.deployed();
+    console.log("MedRegistry deployed to:", medRegistry.address);
+
+    // Save deployment info
+    const deploymentsDir = path.join(__dirname, '../deployments');
+    if (!fs.existsSync(deploymentsDir)) {
+      fs.mkdirSync(deploymentsDir);
+    }
+
+    const deploymentInfo = {
+      amoy: {
+        MedRegistry: {
+          address: medRegistry.address,
+          transactionHash: medRegistry.deployTransaction.hash,
+          deployer: deployer.address,
+          timestamp: new Date().toISOString()
+        }
+      }
+    };
+
+    const deploymentPath = path.join(deploymentsDir, 'amoy.json');
+    fs.writeFileSync(deploymentPath, JSON.stringify(deploymentInfo, null, 2));
+    console.log("Deployment info saved to:", deploymentPath);
+
+  } catch (error) {
+    console.error("Deployment failed:", error);
+    process.exit(1);
+  }
 }
 
 main()
