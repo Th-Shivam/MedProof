@@ -30,14 +30,15 @@ const ManufacturerDashboard = ({ contract, account }) => {
     };
 
     const handleRecallSubmit = async () => {
-        if (!contract || !recallData.batchId || !recallData.reason) return;
+        if (!contract || !recallBatchId || !recallReason) return;
         try {
             setLoading(true);
             setStatus('⚠️ Initiating Batch Recall on Blockchain...');
-            const tx = await contract.recallBatch(recallData.batchId, recallData.reason);
+            const tx = await contract.recallBatch(recallBatchId, recallReason);
             await tx.wait();
             setStatus('🚨 BATCH RECALLED SUCCESSFULLY. It is now flagged as dangerous.');
-            setRecallData({ batchId: '', reason: '' });
+            setRecallBatchId('');
+            setRecallReason('');
         } catch (error) {
             console.error(error);
             setStatus(`❌ Error: ${error.message}`);
@@ -107,19 +108,6 @@ const ManufacturerDashboard = ({ contract, account }) => {
             setStatus(`❌ Transaction Error: ${error.message}`);
         } finally {
             setLoading(false);
-        }
-    };
-
-    const handleRecallSubmit = async (e) => {
-        e.preventDefault();
-        if (!contract) return;
-        try {
-            const tx = await contract.recallBatch(recallBatchId, recallReason);
-            await tx.wait();
-            alert("⚠️ BATCH RECALLED SUCCESSFULLY. Global Warning Issued.");
-        } catch (error) {
-            console.error(error);
-            alert("Error: " + error.message);
         }
     };
 
