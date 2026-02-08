@@ -9,9 +9,12 @@ import LandingPage from './components/landing/LandingPage';
 import Footer from './components/common/Footer';
 import './assets/css/App.css';
 
+import { ThemeProvider, ThemeContext } from './context/ThemeContext';
+import { LanguageProvider, LanguageContext } from './context/LanguageContext';
+
 const CONTRACT_ADDRESS = "0x8a0f815a279eD8e74406b021d8e2e6cb02937767"; // Deployed to Amoy
 
-function App() {
+function AppContent() {
     // ... (state lines 14-20) ...
     const [account, setAccount] = useState(null);
     const [provider, setProvider] = useState(null);
@@ -22,6 +25,9 @@ function App() {
     const [initialBatchId, setInitialBatchId] = useState(null);
     const [isPublic, setIsPublic] = useState(false);
     const [isConnecting, setIsConnecting] = useState(false);
+
+    const { increaseFontSize, decreaseFontSize, resetFontSize } = React.useContext(ThemeContext);
+    const { language, toggleLanguage, t } = React.useContext(LanguageContext);
 
     // Public RPC for Read-Only Access (Amoy Testnet)
     const PUBLIC_RPC = "https://rpc-amoy.polygon.technology/";
@@ -178,19 +184,31 @@ function App() {
                     <div className="gov-top-strip">
                         <div className="gov-container header-strip-inner">
                             <div className="gov-links">
-                                <a href="#main">Skip to Main Content</a>
+                                <a href="#main">{t('skipToMain')}</a>
                                 <span className="separator">|</span>
-                                <a href="#screen-reader">Screen Reader Access</a>
+                                <a href="#screen-reader">{t('screenReader')}</a>
                             </div>
                             <div className="gov-settings">
                                 <span className="font-resize">
-                                    <button>A-</button>
-                                    <button>A</button>
-                                    <button>A+</button>
+                                    <button onClick={decreaseFontSize}>A-</button>
+                                    <button onClick={resetFontSize}>A</button>
+                                    <button onClick={increaseFontSize}>A+</button>
                                 </span>
                                 <span className="separator">|</span>
                                 <div className="lang-switch">
-                                    <span>English</span> / <span>हिन्दी</span>
+                                    <span 
+                                        onClick={() => toggleLanguage()} 
+                                        style={{ cursor: 'pointer', fontWeight: language === 'en' ? 'bold' : 'normal' }}
+                                    >
+                                        English
+                                    </span> 
+                                    / 
+                                    <span 
+                                        onClick={() => toggleLanguage()} 
+                                        style={{ cursor: 'pointer', fontWeight: language === 'hi' ? 'bold' : 'normal' }}
+                                    >
+                                        हिन्दी
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -208,14 +226,14 @@ function App() {
                                     </div>
                                 </div>
                                 <div className="ministry-text">
-                                    <span className="gov-label" style={{ fontSize: '1.1rem', maxWidth: '300px', lineHeight: '1.3' }}>MedProof: Blockchain-Based Medicine Authenticity & Expiry Verification</span>
-                                    <span className="ministry-label">Ideas Powering Atmanirbhar Bharat</span>
+                                    <span className="gov-label" style={{ fontSize: '1.1rem', maxWidth: '300px', lineHeight: '1.3' }}>{t('medProofTitle')}</span>
+                                    <span className="ministry-label">{t('atmanirbhar')}</span>
                                 </div>
                             </div>
 
                             <div className="azadi-logo">
                                 <div className="tech-logos">
-                                    <span>Secured by<br /><strong>Polygon PoS</strong></span>
+                                    <span>{t('securedBy')}<br /><strong>Polygon PoS</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -225,12 +243,12 @@ function App() {
                     <nav className="nic-navbar">
                         <div className="gov-container">
                             <ul>
-                                <li><a href="#" onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>Batch Verification</a></li>
+                                <li><a href="#" onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>{t('batchVerification')}</a></li>
                                 {!isPublic && (
-                                    <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>Manufacturer & Supply Chain</a></li>
+                                    <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>{t('manufacturerChain')}</a></li>
                                 )}
-                                <li><a href="#" onClick={checkNetworkStatus}>Network Status</a></li>
-                                <li><a href="#" onClick={handleSupport}>Support</a></li>
+                                <li><a href="#" onClick={checkNetworkStatus}>{t('networkStatus')}</a></li>
+                                <li><a href="#" onClick={handleSupport}>{t('support')}</a></li>
                                 <li className="right-align-btn">
                                     <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
                                 </li>
@@ -248,6 +266,16 @@ function App() {
             <Footer />
         </div>
     );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;
