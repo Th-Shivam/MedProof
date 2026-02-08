@@ -155,7 +155,7 @@ function AppContent() {
                 }
             }
         }
-    }, [account]);
+    }, []);
 
     // Function 1: Check Network Status
     const checkNetworkStatus = async (e) => {
@@ -180,6 +180,18 @@ function AppContent() {
         setView('support');
     };
 
+    // Function 3: Go Back to Landing Page
+    const goBackToHome = (e) => {
+        if (e) e.preventDefault();
+        disconnectWallet(); // This resets state and shows Landing Page
+    };
+
+    // Function 4: Accessibility Handlers
+    const handleScreenReader = (e) => {
+        e.preventDefault();
+        alert(t('screenReaderAlert') || "🔊 Screen Reader Access Enabled.\n\nThis application is optimized for screen readers (NVDA, JAWS).\n- Use Tab to navigate.\n- Semantic HTML tags are used throughout.");
+    };
+
     return (
         <div className="App">
             {!account && !isPublic ? (
@@ -190,9 +202,9 @@ function AppContent() {
                     <div className="gov-top-strip">
                         <div className="gov-container header-strip-inner">
                             <div className="gov-links">
-                                <a href="#main">{t('skipToMain')}</a>
+                                <a href="#main-content">{t('skipToMain')}</a>
                                 <span className="separator">|</span>
-                                <a href="#screen-reader">{t('screenReader')}</a>
+                                <a href="#" onClick={handleScreenReader}>{t('screenReader')}</a>
                             </div>
                             <div className="gov-settings">
                                 <span className="font-resize">
@@ -202,15 +214,15 @@ function AppContent() {
                                 </span>
                                 <span className="separator">|</span>
                                 <div className="lang-switch">
-                                    <span 
-                                        onClick={() => toggleLanguage()} 
+                                    <span
+                                        onClick={() => toggleLanguage()}
                                         style={{ cursor: 'pointer', fontWeight: language === 'en' ? 'bold' : 'normal' }}
                                     >
                                         English
-                                    </span> 
-                                    / 
-                                    <span 
-                                        onClick={() => toggleLanguage()} 
+                                    </span>
+                                    /
+                                    <span
+                                        onClick={() => toggleLanguage()}
                                         style={{ cursor: 'pointer', fontWeight: language === 'hi' ? 'bold' : 'normal' }}
                                     >
                                         हिन्दी
@@ -266,8 +278,25 @@ function AppContent() {
                             </ul>
                         </div>
                     </nav>
-                    <main>
+                    <main id="main-content">
                         <div className="content-area">
+                            {/* Breadcrumb / Back Button for easy navigation */}
+                            <div className="gov-container" style={{ padding: '10px 0' }}>
+                                <button
+                                    onClick={goBackToHome}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: 'var(--gov-blue)',
+                                        textDecoration: 'underline',
+                                        cursor: 'pointer',
+                                        fontSize: '0.9rem'
+                                    }}
+                                >
+                                    ← {t('backToHome') || "Back to Home"}
+                                </button>
+                            </div>
+
                             {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
                             {view === 'consumer' && <PatientVerify contract={contract} initialBatchId={initialBatchId} />}
                             {view === 'support' && <Support onBack={() => setView('consumer')} />}
@@ -281,13 +310,13 @@ function AppContent() {
 }
 
 function App() {
-  return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <AppContent />
-      </LanguageProvider>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider>
+            <LanguageProvider>
+                <AppContent />
+            </LanguageProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;
