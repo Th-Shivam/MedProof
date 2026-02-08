@@ -14,6 +14,10 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+app.get('/', (req, res) => {
+    res.send("MedProof Backend is Running! 🚀");
+});
+
 app.post('/upload', upload.single('file'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded.' });
