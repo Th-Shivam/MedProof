@@ -21,7 +21,7 @@ const Support = ({ onBack }) => {
                     <h3>📧 {t('contactUs')}</h3>
                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px', marginTop: '0.5rem' }}>
                         <p style={{ margin: 0, fontSize: '1.1rem' }}>
-                            <strong>Email:</strong> <a href="mailto:anotnet.shivam@gmail" style={{ color: 'var(--gov-blue)' }}>anotnet.shivam@gmail</a>
+                            <strong>Email:</strong> <a href="mailto:medproof.contact@gmail.com" style={{ color: 'var(--gov-blue)' }}>medproof.contact@gmail.com</a>
                         </p>
                     </div>
                 </section>

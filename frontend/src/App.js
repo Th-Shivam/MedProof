@@ -26,6 +26,10 @@ function AppContent() {
     const [initialBatchId, setInitialBatchId] = useState(null);
     const [isPublic, setIsPublic] = useState(false);
     const [isConnecting, setIsConnecting] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const closeMenu = () => setIsMenuOpen(false);
 
     const { increaseFontSize, decreaseFontSize, resetFontSize } = React.useContext(ThemeContext);
     const { language, toggleLanguage, t } = React.useContext(LanguageContext);
@@ -244,15 +248,20 @@ function AppContent() {
                     {/* Standard Navbar */}
                     <nav className="nic-navbar">
                         <div className="gov-container">
-                            <ul>
-                                <li><a href="#" onClick={() => setView('consumer')} className={view === 'consumer' ? 'active' : ''}>{t('batchVerification')}</a></li>
+                            <button className="hamburger-menu" onClick={toggleMenu}>
+                                {isMenuOpen ? '✕' : '☰'}
+                            </button>
+                            <ul className={isMenuOpen ? 'nav-links open' : 'nav-links'}>
+                                <li><a href="#" onClick={() => { setView('consumer'); closeMenu(); }} className={view === 'consumer' ? 'active' : ''}>{t('batchVerification')}</a></li>
                                 {!isPublic && (
-                                    <li><a href="#" onClick={() => setView('manufacturer')} className={view === 'manufacturer' ? 'active' : ''}>{t('manufacturerChain')}</a></li>
+                                    <li><a href="#" onClick={() => { setView('manufacturer'); closeMenu(); }} className={view === 'manufacturer' ? 'active' : ''}>{t('manufacturerChain')}</a></li>
                                 )}
-                                <li><a href="#" onClick={checkNetworkStatus}>{t('networkStatus')}</a></li>
-                                <li><a href="#" onClick={handleSupport}>{t('support')}</a></li>
+                                <li><a href="#" onClick={(e) => { checkNetworkStatus(e); closeMenu(); }}>{t('networkStatus')}</a></li>
+                                <li><a href="#" onClick={(e) => { handleSupport(e); closeMenu(); }}>{t('support')}</a></li>
                                 <li className="right-align-btn">
-                                    <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                                    <div onClick={closeMenu}>
+                                        <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />
+                                    </div>
                                 </li>
                             </ul>
                         </div>

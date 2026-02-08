@@ -228,3 +228,49 @@ h4,
 .verify-card {
     animation: fadeIn 0.6s ease-out;
 }
+
+/* Mobile Responsiveness for Theme Elements */
+@media (max-width: 768px) {
+    .glass-panel {
+        padding: 1.5rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: var(--radius-md);
+        /* Smaller radius for mobile */
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        /* Smaller headings */
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .glass-btn {
+        width: 100%;
+        /* Full width buttons on mobile */
+        justify-content: center;
+        padding: 14px;
+        /* Larger touch target */
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        /* Stack details vertically */
+    }
+
+    .verify-container {
+        padding: 0;
+        margin-top: 1rem;
+    }
+
+    .guide-steps .step-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
