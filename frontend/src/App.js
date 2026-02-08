@@ -6,6 +6,7 @@ import WalletConnect from './components/common/WalletConnect';
 import ManufacturerDashboard from './components/dashboard/ManufacturerDashboard';
 import PatientVerify from './components/verify/PatientVerify';
 import LandingPage from './components/landing/LandingPage';
+import Support from './components/common/Support';
 import Footer from './components/common/Footer';
 import './assets/css/App.css';
 
@@ -169,9 +170,10 @@ function AppContent() {
     };
 
     // Function 2: Support Popup
+    // Function 2: Support Page Navigation
     const handleSupport = (e) => {
         e.preventDefault();
-        alert("📞 MedProof Support (Hackathon Demo)\n\nFor Judges/Testers:\nIf you face issues, please reset your MetaMask activity tab or contact us.\n\n📧 Email: medproof.contact@gmail.com\n");
+        setView('support');
     };
 
     return (
@@ -259,6 +261,7 @@ function AppContent() {
                         <div className="content-area">
                             {view === 'manufacturer' && <ManufacturerDashboard contract={contract} account={account} />}
                             {view === 'consumer' && <PatientVerify contract={contract} initialBatchId={initialBatchId} />}
+                            {view === 'support' && <Support onBack={() => setView('consumer')} />}
                         </div>
                     </main>
                 </>
