@@ -164,3 +164,122 @@
 .App {
   animation: fadeIn 0.5s ease-out;
 }
+
+/* Hamburger Menu Button (Default Hidden) */
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Mobile Responsiveness & Hamburger Logic */
+@media (max-width: 768px) {
+
+  /* Top Strip */
+  .header-strip-inner {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .gov-links,
+  .gov-settings {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Main Header */
+  .header-inner-nic {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .logo-section {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ministry-text {
+    border-left: none;
+    padding-left: 0;
+    align-items: center;
+  }
+
+  .gov-label {
+    text-align: center;
+  }
+
+  /* Navbar with Hamburger */
+  .nic-navbar {
+    padding: 0.5rem 0;
+    position: relative;
+  }
+
+  .nic-navbar .gov-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hamburger-menu {
+    display: block;
+    /* Show on mobile */
+    align-self: flex-end;
+    /* Position to right */
+    margin-right: 1rem;
+    margin-top: -0.5rem;
+    /* Adjust alignment if needed */
+  }
+
+  /* Hide links by default on mobile */
+  .nic-navbar .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    background: var(--gov-blue);
+    margin-top: 1rem;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  /* Show links when menu is open */
+  .nic-navbar .nav-links.open {
+    display: flex;
+  }
+
+  .nic-navbar li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nic-navbar a {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .nic-navbar a:hover,
+  .nic-navbar a.active {
+    width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: none;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .right-align-btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
