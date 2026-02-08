@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Updated import for v3+
-import '../../assets/css/Theme.css';
+import './ManufacturerDashboard.css'; // Import new CSS
 
 const ManufacturerDashboard = ({ contract, account }) => {
     const [formData, setFormData] = useState({
@@ -114,105 +114,126 @@ const ManufacturerDashboard = ({ contract, account }) => {
 
     return (
         <div className="dashboard-container">
-            <div className="glass-panel dashboard-card">
-                <div className="card-header">
-                    <h2 style={{ color: 'var(--gov-blue)', borderBottom: '2px solid var(--gov-gold)', paddingBottom: '10px' }}> Certified Manufacturer Node</h2>
-                    <p>Securely mint new pharmaceutical batches to the decentralized ledger.</p>
-                </div>
+            <div className="dashboard-grid">
 
-                <form onSubmit={registerBatch} className="glass-form">
-                    <div className="input-group">
-                        <label>Medicine Name (INN/Brand)</label>
-                        <div className="glass-input-wrapper">
+                {/* Left Column: Form */}
+                <div className="dash-card">
+                    <div className="dash-header">
+                        <h2>
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#2563eb' }}><path d="M12 2l9 4.9V17L12 22 3 17V6.9l9-4.9z"></path></svg>
+                            Manufacturer Node
+                        </h2>
+                        <p>Securely mint new pharmaceutical batches.</p>
+                    </div>
+
+                    <form onSubmit={registerBatch} className="form-grid">
+                        <div className="form-group">
+                            <label>Medicine Name</label>
                             <input className="glass-input" type="text" name="medicineName" placeholder="e.g. Paracetamol 500mg" required value={formData.medicineName} onChange={handleChange} />
                         </div>
-                    </div>
 
-                    <div className="input-group">
-                        <label>Authorized Distributor (Supply Chain)</label>
-                        <div className="glass-input-wrapper">
+                        <div className="form-group">
+                            <label>Authorized Distributor</label>
                             <input className="glass-input" type="text" name="distributorName" placeholder="e.g. Apollo Pharmacy Logistics" value={formData.distributorName || ''} onChange={handleChange} />
                         </div>
-                    </div>
 
-                    <div className="input-group">
-                        <label>Batch Identifier (UID)</label>
-                        <div className="glass-input-wrapper">
-                            <input className="glass-input" type="text" name="batchId" placeholder="e.g. BATCH-2024-X99" required value={formData.batchId} onChange={handleChange} />
+                        <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                            <div className="form-group">
+                                <label>Batch ID (UID)</label>
+                                <input className="glass-input" type="text" name="batchId" placeholder="BATCH-X99" required value={formData.batchId} onChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <label>Expiry Date</label>
+                                <input className="glass-input" type="date" name="expiryDate" required value={formData.expiryDate} onChange={handleChange} />
+                            </div>
                         </div>
-                    </div>
-                    <div className="input-group">
-                        <label>Manufacturer Name</label>
-                        <div className="glass-input-wrapper">
+
+                        <div className="form-group">
+                            <label>Manufacturer Name</label>
                             <input className="glass-input" type="text" name="manufacturerName" placeholder="e.g. Sun Pharma Ltd." required value={formData.manufacturerName} onChange={handleChange} />
                         </div>
-                    </div>
-                    <div className="input-group">
-                        <label>Expiry Date</label>
-                        <div className="glass-input-wrapper">
-                            <input className="glass-input" type="date" name="expiryDate" required value={formData.expiryDate} onChange={handleChange} />
-                        </div>
-                    </div>
-                    <div className="input-group">
-                        <label>CoA / Lab Report (IPFS Upload)</label>
-                        <div className="glass-input-wrapper">
+
+                        <div className="form-group">
+                            <label>CoA / Lab Report (IPFS)</label>
                             <input className="glass-input file-input" type="file" onChange={handleFileChange} />
                         </div>
-                    </div>
 
-                    <button type="submit" disabled={loading} className="glass-btn submit-btn">
-                        {loading ? 'Minting to Blockchain...' : '🔗 Mint Batch Hash'}
-                    </button>
-                </form>
+                        <button type="submit" disabled={loading} className="submit-btn">
+                            {loading ? (
+                                <>
+                                    <div className="spinner-border" style={{ width: '20px', height: '20px', border: '2px solid white', borderTop: '2px solid transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                                    Processing...
+                                </>
+                            ) : (
+                                <>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                    Mint Batch Hash
+                                </>
+                            )}
+                        </button>
+                    </form>
+                </div>
 
-                {status && <div className="status-box glass-panel"><p>{status}</p></div>}
+                {/* Right Column: Status & Preview */}
+                <div className="preview-section">
 
-                {generatedQr && (
-                    <div className="qr-section glass-panel">
-                        <h3>🖨️ Digital Asset Created</h3>
-                        <div className="qr-wrapper">
-                            <QRCodeCanvas value={generatedQr} size={180} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} includeMargin={true} />
+                    {/* Status Box */}
+                    {status && (
+                        <div className="status-box">
+                            {status}
                         </div>
-                        <p className="qr-url">Verification Link: <span>{generatedQr}</span></p>
-                    </div>
-                )}
-            </div>
+                    )}
 
-            {/* RECALL SECTION (KILL SWITCH) */}
-            <div className="glass-panel" style={{ marginTop: '2rem', border: '1px solid rgba(255, 0, 0, 0.3)', background: 'rgba(255, 0, 0, 0.05)', padding: '20px' }}>
-                <h3 style={{ color: '#e74c3c', marginTop: 0 }}>🚨 Emergency Protocol: Batch Recall</h3>
-                <p style={{ fontSize: '0.9rem', color: '#c0392b', marginBottom: '15px' }}>
-                    <strong>WARNING:</strong> This action is irreversible. It will permanently flag the batch as "UNSAFE" on the global ledger.
-                </p>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <div className="glass-input-wrapper" style={{ flex: 1 }}>
-                        <input
-                            className="glass-input"
-                            type="text"
-                            placeholder="Enter Batch ID"
-                            value={recallBatchId}
-                            onChange={(e) => setRecallBatchId(e.target.value)}
-                            style={{ borderColor: '#e74c3c' }}
-                        />
-                    </div>
-                    <div className="glass-input-wrapper" style={{ flex: 2 }}>
-                        <input
-                            className="glass-input"
-                            type="text"
-                            placeholder="Reason (e.g. Contamination detection)"
-                            value={recallReason}
-                            onChange={(e) => setRecallReason(e.target.value)}
-                            style={{ borderColor: '#e74c3c' }}
-                        />
+                    {/* QR Code Card */}
+                    {generatedQr ? (
+                        <div className="qr-card">
+                            <h3>Digital Asset Created</h3>
+                            <div className="qr-frame">
+                                <QRCodeCanvas value={generatedQr} size={160} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} includeMargin={true} />
+                            </div>
+                            <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '10px' }}>Verification Link:</p>
+                            <a href={generatedQr} target="_blank" rel="noopener noreferrer" className="qr-link">
+                                {generatedQr}
+                            </a>
+                        </div>
+                    ) : (
+                        <div className="dash-card" style={{ textAlign: 'center', minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.6 }}>
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                            <p style={{ marginTop: '20px', color: '#94a3b8' }}>QR Code will appear here<br />after minting.</p>
+                        </div>
+                    )}
+
+                    {/* Kill Switch (Recall) */}
+                    <div className="recall-section">
+                        <div className="recall-header">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <h3>Emergency Recall</h3>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: '15px' }}>
+                            <input
+                                className="glass-input recall-input"
+                                type="text"
+                                placeholder="Enter Batch ID"
+                                value={recallBatchId}
+                                onChange={(e) => setRecallBatchId(e.target.value)}
+                            />
+                        </div>
+                        <div className="recall-actions">
+                            <input
+                                className="glass-input recall-input"
+                                type="text"
+                                placeholder="Reason"
+                                value={recallReason}
+                                onChange={(e) => setRecallReason(e.target.value)}
+                                style={{ flex: 1 }}
+                            />
+                            <button className="kill-btn" onClick={handleRecallSubmit}>
+                                EXECUTE
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button
-                    className="glass-btn"
-                    style={{ background: '#c0392b', marginTop: '10px', width: '100%', color: 'white', fontWeight: 'bold' }}
-                    onClick={handleRecallSubmit}
-                >
-                    ⚠️ EXECUTE KILL SWITCH
-                </button>
+
             </div>
         </div>
     );

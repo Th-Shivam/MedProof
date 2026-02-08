@@ -244,7 +244,7 @@ function AppContent() {
                                     </div>
                                 </div>
                                 <div className="ministry-text">
-                                    <span className="gov-label" style={{ fontSize: '1.1rem', maxWidth: '300px', lineHeight: '1.3' }}>{t('medProofTitle')}</span>
+                                    <span className="gov-label" style={{ fontSize: '1.2rem', whiteSpace: 'nowrap' }}>{t('medProofTitle')}</span>
                                     <span className="ministry-label">{t('atmanirbhar')}</span>
                                 </div>
                             </div>

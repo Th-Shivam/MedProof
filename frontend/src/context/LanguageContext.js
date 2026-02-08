@@ -14,8 +14,8 @@ const translations = {
         networkStatus: "Network Status",
         support: "Support",
         // Landing Page
-        heroTitle: "Ideas Powering Atmanirbhar Bharat",
-        heroSubtitle: "A Decentralized Authenticity Protocol. Bridging the physical medicine box to an immutable digital record to protect the \"Pharmacy of the World\".",
+        heroTitle: "MedProof",
+        heroSubtitle: "A decentralized national verification network enabling citizens, hospitals, and regulators to instantly confirm medicine authenticity, expiry, and recalls. Bridging the physical medicine box to an immutable digital record to safeguard India’s role as the \"Pharmacy of the World\"",
         initializing: "INITIALIZING...",
         publicScanner: "🔍 Public Scanner",
         manufacturerNode: "Manufacturer Node",
@@ -43,7 +43,7 @@ const translations = {
         ruralEmpowerment: "Rural Empowerment",
         ruralDesc: "Democratizes health safety. Allows anyone with a basic smartphone to verify medicine quality instantly.",
         // Patient Verify
-        verifyTitle: "🕵️‍♀️ Public Authenticity Verification",
+        verifyTitle: " Public Authenticity Verification",
         verifySubtitle: "Verify medicine legitimacy via the secure blockchain ledger.",
         activeCamera: "Activate Camera Scanner",
         stopScanning: "Stop Scanning",

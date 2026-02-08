@@ -1,0 +1,344 @@
+/* PatientVerify.css */
+
+.verify-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* PatientVerify.css - Modern Classic Redesign */
+
+.verify-container {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Main White Card */
+.verify-card {
+    background: #ffffff;
+    border-radius: 40px;
+    padding: 60px 40px;
+    width: 100%;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    border: 1px solid #f0f0f0;
+}
+
+/* Icons */
+.detective-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Typography */
+.verify-title {
+    font-size: 3rem;
+    /* Large and bold */
+    font-weight: 800;
+    color: #0f172a;
+    /* Dark Navy */
+    margin: 10px 0 10px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.verify-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+/* Scan Button (Blue Pill) */
+.scan-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.scan-btn {
+    background: #2563eb;
+    /* Bright Blue */
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    /* Bold text */
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.scan-btn:hover {
+    transform: translateY(-2px);
+    background: #1d4ed8;
+    box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.6);
+}
+
+.scan-btn.stop {
+    background: #ef4444;
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+}
+
+/* Combined Input Field - The Pill */
+.input-container {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    /* The look: White box with button inside/right */
+    padding: 6px 6px 6px 20px;
+    display: flex;
+    align-items: center;
+    max-width: 550px;
+    margin: 0 auto 30px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.input-container:focus-within {
+    border-color: #94a3b8;
+    box-shadow: 0 0 0 4px rgba(241, 245, 249, 1);
+}
+
+.input-field {
+    flex: 1;
+    border: none;
+    padding: 12px 0;
+    font-size: 1rem;
+    outline: none;
+    color: #334155;
+    background: transparent;
+    font-weight: 500;
+}
+
+.input-field::placeholder {
+    color: #94a3b8;
+}
+
+.action-btn {
+    background: #0f172a;
+    /* Dark Navy / Black */
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: #1e293b;
+}
+
+.action-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* Result Cards */
+.result-display {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.status-card {
+    border-radius: 16px;
+    border: 1px solid;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+/* Valid Status */
+.status-card.valid {
+    background: linear-gradient(to right, #f0fdf4, #dcfce7);
+    border-color: #bbf7d0;
+}
+
+.status-card.valid .status-header {
+    background: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #bbf7d0;
+}
+
+/* Expired Status */
+.status-card.expired {
+    background: linear-gradient(to right, #fef2f2, #fee2e2);
+    border-color: #fecaca;
+}
+
+.status-card.expired .status-header {
+    background: rgba(220, 38, 38, 0.1);
+    color: #b91c1c;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #fecaca;
+}
+
+/* Recalled Status */
+.status-card.recalled {
+    background: #fff5f5;
+    border: 2px solid #ef4444;
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+}
+
+.status-card.recalled .status-header {
+    background: #ef4444;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.status-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.status-desc {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin: 4px 0 0;
+}
+
+/* Details Grid */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 24px;
+}
+
+.detail-row {
+    margin-bottom: 5px;
+}
+
+.label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Certificate Links */
+.cert-actions {
+    padding: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ipfs-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(37, 99, 235, 0.1);
+    transition: all 0.2s;
+}
+
+.ipfs-link:hover {
+    background: rgba(37, 99, 235, 0.2);
+}
+
+/* Pro Mode */
+.pro-mode-toggle {
+    margin-top: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pro-details {
+    margin-top: 15px;
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #334155;
+    text-align: left;
+}
+
+@media (max-width: 640px) {
+    .verify-container {
+        padding: 10px;
+    }
+
+    .verify-card {
+        padding: 24px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .search-section {
+        flex-direction: column;
+    }
+
+    .verify-btn {
+        padding: 14px;
+    }
+
+    .cert-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ipfs-link {
+        width: 100%;
+        justify-content: center;
+    }
+}

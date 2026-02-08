@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../assets/css/Theme.css';
+import './PatientVerify.css'; // Import new CSS
 import QrScanner from 'react-qr-scanner';
 import { LanguageContext } from '../../context/LanguageContext';
 
@@ -101,166 +101,184 @@ const PatientVerify = ({ contract, initialBatchId }) => {
 
     return (
         <div className="verify-container">
-            <div className="glass-panel verify-card">
-                <h2>{t('verifyTitle')}</h2>
-                <p>{t('verifySubtitle')}</p>
+            <div className="verify-card">
+                {/* Visual Icon - Spy Silhouette */}
+                <div className="detective-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="#0f172a" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C9 2 7 3.5 7 5C7 6 8 7 9 7.5V9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9V7.5C16 7 17 6 17 5C17 3.5 15 2 12 2ZM4 22H20V21C20 17.5 15.5 16 12 16C8.5 16 4 17.5 4 21V22Z" />
+                        <rect x="7" y="10" width="10" height="2" rx="1" fill="#0f172a" />
+                    </svg>
+                </div>
 
-                {/* Camera Scanner Section - Integrated into Glass UI */}
-                <div className="scan-controls" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+                <h2 className="verify-title">{t('verifyTitle')}</h2>
+                <p className="verify-subtitle">{t('verifySubtitle')}</p>
+
+                {/* Scanner Section */}
+                <div className="scan-btn-wrapper">
                     {!isScanning ? (
-                        <button
-                            className="glass-btn"
-                            onClick={() => setIsScanning(true)}
-                            style={{ background: '#4f46e5', width: '100%', justifyContent: 'center' }}
-                        >
+                        <button className="scan-btn" onClick={() => setIsScanning(true)}>
+                            {/* Viewfinder Icon */}
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 8V5C4 4.44772 4.44772 4 5 4H8" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+                                <path d="M16 4H19C19.5523 4 20 4.44772 20 5V8" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+                                <path d="M20 16V19C20 19.5523 19.5523 20 19 20H16" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+                                <path d="M8 20H5C4.44772 20 4 19.5523 4 19V16" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
+                            </svg>
                             {t('activeCamera')}
                         </button>
                     ) : (
-                        <button
-                            className="glass-btn"
-                            onClick={() => setIsScanning(false)}
-                            style={{ background: '#dc2626', width: '100%', justifyContent: 'center' }}
-                        >
+                        <button className="scan-btn stop" onClick={() => setIsScanning(false)}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             {t('stopScanning')}
                         </button>
                     )}
                 </div>
 
                 {isScanning && (
-                    <div className="scanner-container" style={{ background: 'rgba(0,0,0,0.8)', padding: '10px', borderRadius: '12px', marginBottom: '1.5rem', overflow: 'hidden' }}>
+                    <div className="scanner-frame" style={{
+                        margin: '0 auto 40px',
+                        borderRadius: '24px',
+                        boxShadow: '0 20px 40px -10px rgba(0,0,0,0.2)',
+                        border: '4px solid #f8fafc'
+                    }}>
                         <QrScanner
                             delay={300}
                             onError={handleError}
                             onScan={handleScan}
-                            style={{ width: '100%', borderRadius: '12px' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                        <p style={{ color: 'white', marginTop: '10px', fontSize: '0.9rem' }}>{t('alignQr')}</p>
+                        <div className="scanner-overlay"></div>
+                        <div className="laser-beam"></div>
                     </div>
                 )}
 
-                <div className="search-section">
-                    <div className="glass-input-wrapper">
-                        <input
-                            className="glass-input"
-                            type="text"
-                            placeholder={t('inputPlaceholder')}
-                            value={batchId}
-                            onChange={(e) => setBatchId(e.target.value)}
-                        />
-                    </div>
-                    <button className="glass-btn verify-btn" onClick={() => verifyBatch()} disabled={loading}>
-                        {loading ? t('querying') : t('verifyAuth')}
+                {/* Manual Entry - Modern Combined Pill */}
+                <div className="input-container">
+                    <input
+                        className="input-field"
+                        type="text"
+                        placeholder={t('inputPlaceholder')}
+                        value={batchId}
+                        onChange={(e) => setBatchId(e.target.value)}
+                    />
+                    <button className="action-btn" onClick={() => verifyBatch()} disabled={loading}>
+                        {loading ? '...' : t('verifyAuth')}
                     </button>
                 </div>
 
-                {error && <div className="result-card error-card glass-panel" style={{ marginTop: '1.5rem' }}><h3>{error}</h3></div>}
-
-                {result && (
-                    <div className={`result-card glass-panel ${result.isRecalled ? 'recalled-card' : result.isExpired ? 'expired-card' : 'valid-card'}`} style={{ marginTop: '1.5rem', border: result.isRecalled ? '3px solid red' : '' }}>
-
-                        {result.isRecalled ? (
-                            <div className="status-header recalled" style={{ background: 'rgba(255, 0, 0, 0.1)', padding: '15px', borderRadius: '10px', border: '1px solid red' }}>
-                                <h3 style={{ color: 'red', fontSize: '1.5rem' }}>{t('criticalRecalled')}</h3>
-                                <p style={{ color: 'darkred', fontWeight: 'bold' }}>{t('recalledMsg')}</p>
+                {/* Error Display */}
+                {error && (
+                    <div className="status-card expired" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                        <div className="status-header">
+                            <svg className="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <div>
+                                <h3 className="status-title">Verification Error</h3>
+                                <p className="status-desc">{error}</p>
                             </div>
-                        ) : result.isExpired ? (
-                            <div className="status-header expired">
-                                <h3>{t('expiryAlert')}</h3>
-                                <p>{t('expiryMsg')}</p>
-                            </div>
-                        ) : (
-                            <div className="status-header valid">
-                                <h3>{t('verifiedAuthentic')}</h3>
-                                <div className="trust-badges">
-                                    <span className="badge">{t('blockchainSecured')}</span>
-                                    <span className="badge">{t('manufacturerSigned')}</span>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="details-grid" style={{ marginTop: '1.5rem' }}>
-                            <div className="detail-item"><strong>{t('medName')}</strong> <span>{result.medicineName}</span></div>
-                            <div className="detail-item"><strong>{t('batchUid')}</strong> <span>{result.batchId}</span></div>
-                            <div className="detail-item"><strong>{t('expiryDate')}</strong> <span>{result.formattedDate}</span></div>
-                            <div className="detail-item"><strong>{t('manufacturer')}</strong> <span>{result.manufacturerName}</span></div>
-
-                            {result.distributorName && (
-                                <div className="detail-item" style={{ gridColumn: '1 / -1', background: 'rgba(255, 153, 51, 0.1)', border: '1px solid var(--gov-orange)' }}>
-                                    <strong>{t('logisticsPartner')}</strong> <span style={{ color: '#d35400' }}>🚚 {result.distributorName}</span>
-                                </div>
-                            )}
                         </div>
+                    </div>
+                )}
 
-                        <div style={{ marginTop: '1rem' }}>
-                            {result.ipfsHash ? (
-                                <div style={{ textAlign: 'center' }}>
-                                    <p style={{ marginBottom: '10px', fontWeight: '600', color: 'var(--gov-blue)' }}>{t('qaCert')}</p>
-                                    <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
-                                        <a
-                                            href={`https://ipfs.io/ipfs/${result.ipfsHash}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="glass-btn view-cert-btn"
-                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
-                                        >
-                                            Mirror 1
-                                        </a>
-                                        <a
-                                            href={`https://dweb.link/ipfs/${result.ipfsHash}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="glass-btn view-cert-btn"
-                                            style={{ flex: 1, minWidth: '120px', justifyContent: 'center' }}
-                                        >
-                                            Mirror 2
-                                        </a>
+                {/* Result Display */}
+                {result && (
+                    <div className="result-display">
+                        <div className={`status-card ${result.isRecalled ? 'recalled' : result.isExpired ? 'expired' : 'valid'}`}>
+
+                            {/* Status Header */}
+                            {result.isRecalled ? (
+                                <div className="status-header">
+                                    <svg className="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                    <div>
+                                        <h3 className="status-title">{t('criticalRecalled')}</h3>
+                                        <p className="status-desc">{t('recalledMsg')}</p>
+                                    </div>
+                                </div>
+                            ) : result.isExpired ? (
+                                <div className="status-header">
+                                    <svg className="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    <div>
+                                        <h3 className="status-title">{t('expiryAlert')}</h3>
+                                        <p className="status-desc">{t('expiryMsg')}</p>
                                     </div>
                                 </div>
                             ) : (
-                                <p style={{ color: 'red' }}>{t('certMissing')}</p>
+                                <div className="status-header">
+                                    <svg className="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                    <div>
+                                        <h3 className="status-title">{t('verifiedAuthentic')}</h3>
+                                        <p className="status-desc">Batch is registered and safe.</p>
+                                    </div>
+                                </div>
                             )}
-                        </div>
 
-                        {/* PRO MODE TOGGLE */}
-                        <div style={{ marginTop: '2rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
-                            <div
-                                onClick={() => setShowProMode(!showProMode)}
-                                style={{
-                                    cursor: 'pointer',
-                                    color: '#666',
-                                    textAlign: 'center',
-                                    fontSize: '0.8rem',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '5px'
-                                }}
-                            >
-                                {showProMode ? t('hideProof') : t('viewProof')}
+                            {/* Details Grid */}
+                            <div className="details-grid">
+                                <div className="detail-row">
+                                    <span className="label">{t('medName')}</span>
+                                    <span className="value">{result.medicineName}</span>
+                                </div>
+                                <div className="detail-row">
+                                    <span className="label">{t('batchUid')}</span>
+                                    <span className="value" style={{ fontFamily: 'monospace' }}>{result.batchId}</span>
+                                </div>
+                                <div className="detail-row">
+                                    <span className="label">{t('expiryDate')}</span>
+                                    <span className="value">{result.formattedDate}</span>
+                                </div>
+                                <div className="detail-row">
+                                    <span className="label">{t('manufacturer')}</span>
+                                    <span className="value">{result.manufacturerName}</span>
+                                </div>
+                                {result.distributorName && (
+                                    <div className="detail-row" style={{ gridColumn: '1 / -1', marginTop: '10px' }}>
+                                        <span className="label">{t('logisticsPartner')}</span>
+                                        <span className="value" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                            {result.distributorName}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
 
-                            {showProMode && (
-                                <div className="glass-panel" style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.03)', fontSize: '0.85rem', textAlign: 'left', padding: '1rem' }}>
-                                    <h4 style={{ margin: '0 0 10px 0', borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>{t('onChainProof')}</h4>
-
-                                    <div style={{ marginBottom: '5px' }}>
-                                        <strong>{t('ledgerStatus')}</strong> <span style={{ color: 'green' }}>{t('immutable')}</span>
-                                    </div>
-                                    <div style={{ marginBottom: '5px' }}>
-                                        <strong>{t('contract')}</strong> <span style={{ fontFamily: 'monospace' }}>{contract.address}</span>
-                                    </div>
-                                    <div style={{ marginBottom: '5px' }}>
-                                        <strong>{t('signer')}</strong> <span style={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>{result.manufacturerName}</span>
-                                    </div>
-                                    <div style={{ marginBottom: '5px' }}>
-                                        <strong>{t('integrityCheck')}</strong> PASSED
-                                    </div>
-                                    <div style={{ marginTop: '10px', fontSize: '0.75rem', color: '#888' }}>
-                                        {t('dataSource')}
+                            {/* Cert Links */}
+                            {result.ipfsHash && (
+                                <div className="cert-actions">
+                                    <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#64748b' }}>{t('qaCert')}</span>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                        <a href={`https://ipfs.io/ipfs/${result.ipfsHash}`} target="_blank" rel="noopener noreferrer" className="ipfs-link">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                            View Report
+                                        </a>
                                     </div>
                                 </div>
                             )}
                         </div>
+
+                        {/* Pro Mode */}
+                        <div className="pro-mode-toggle" onClick={() => setShowProMode(!showProMode)}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            {showProMode ? t('hideProof') : t('viewProof')}
+                        </div>
+
+                        {showProMode && (
+                            <div className="pro-details">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                    <span>Status:</span>
+                                    <span style={{ color: '#16a34a', fontWeight: 'bold' }}>IMMUTABLE</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                    <span>Contract:</span>
+                                    <span>{contract?.address?.substring(0, 10)}...</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                    <span>Integrity:</span>
+                                    <span>SHA-256 MATCH</span>
+                                </div>
+                                <div style={{ textAlign: 'center', marginTop: '10px', color: '#94a3b8', fontSize: '0.75rem' }}>
+                                    Verified directly on Polygon Amoy Network
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

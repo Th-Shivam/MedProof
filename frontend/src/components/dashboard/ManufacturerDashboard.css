@@ -1,0 +1,253 @@
+/* ManufacturerDashboard.css */
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* Glass Panel Base */
+.dash-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dash-header {
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 15px;
+}
+
+.dash-header h2 {
+    font-size: 1.8rem;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px 0;
+}
+
+.dash-header p {
+    color: #64748b;
+    margin: 0;
+}
+
+/* Form Styles */
+.form-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    margin-left: 4px;
+}
+
+.glass-input {
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: #1e293b;
+    transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.glass-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.file-input {
+    padding: 10px;
+    background: #f8fafc;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.2);
+}
+
+.submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Status & QR Preview (Right Column) */
+.preview-section {
+    position: sticky;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.status-box {
+    padding: 20px;
+    border-radius: 12px;
+    background: #f0f9ff;
+    border-left: 4px solid #0ea5e9;
+    color: #0c4a6e;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+}
+
+.qr-card {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.qr-card h3 {
+    color: #0f172a;
+    margin-top: 0;
+}
+
+.qr-frame {
+    background: white;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+.qr-link {
+    display: block;
+    word-break: break-all;
+    color: #2563eb;
+    font-size: 0.85rem;
+    text-decoration: none;
+    padding: 10px;
+    background: #eff6ff;
+    border-radius: 6px;
+}
+
+/* Kill Switch (Danger Zone) */
+.recall-section {
+    margin-top: 30px;
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    padding: 25px;
+    border-radius: 16px;
+}
+
+.recall-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #b91c1c;
+    margin-bottom: 20px;
+}
+
+.recall-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.recall-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.recall-input {
+    border-color: #fca5a5;
+    background: white;
+}
+
+.recall-input:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.kill-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0 20px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+
+.kill-btn:hover {
+    background: #dc2626;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-section {
+        position: static;
+        order: -1;
+        /* Show status/QR on top on mobile */
+    }
+
+    .recall-actions {
+        flex-direction: column;
+    }
+
+    .kill-btn {
+        padding: 14px;
+    }
+}
