@@ -184,6 +184,12 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                 <p className="status-desc">{error}</p>
                             </div>
                         </div>
+
+                        {/* Fake/Invalid Batch Warning */}
+                        <div className="safety-banner danger" style={{ borderTop: '1px solid #fee2e2' }}>
+                            <strong>⚠️ DO NOT CONSUME</strong>
+                            <span>This product is NOT registered on the blockchain. It may be COUNTERFEIT.</span>
+                        </div>
                     </div>
                 )}
 
@@ -273,6 +279,26 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                     </div>
                                 </div>
                             )}
+
+                            {/* Safety Banner - Explicit Consumer Advice */}
+                            <div className={`safety-banner ${result.isRecalled || result.isExpired ? 'danger' : 'safe'}`}>
+                                {result.isRecalled ? (
+                                    <>
+                                        <strong>⚠️ DO NOT CONSUME</strong>
+                                        <span>This medicine has been recalled due to safety concerns. Return to retailer immediately.</span>
+                                    </>
+                                ) : result.isExpired ? (
+                                    <>
+                                        <strong>⚠️ DO NOT CONSUME</strong>
+                                        <span>This medicine is expired. Consuming it may be ineffective or harmful.</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <strong>✅ SAFE TO CONSUME</strong>
+                                        <span>This medicine is verified authentic and within its shelf life.</span>
+                                    </>
+                                )}
+                            </div>
                         </div>
 
                         {/* Pro Mode */}
@@ -303,7 +329,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 
