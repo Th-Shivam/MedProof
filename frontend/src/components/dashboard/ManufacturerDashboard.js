@@ -156,6 +156,15 @@ const ManufacturerDashboard = ({ contract, account }) => {
                         <div className="form-group">
                             <label>CoA / Lab Report (IPFS)</label>
                             <input className="glass-input file-input" type="file" onChange={handleFileChange} />
+                            <div style={{ textAlign: 'center', margin: '10px 0', color: '#64748b' }}>- OR -</div>
+                            <input
+                                className="glass-input"
+                                type="text"
+                                name="ipfsHash"
+                                placeholder="Paste IPFS Hash (CID) directly"
+                                value={formData.ipfsHash}
+                                onChange={handleChange}
+                            />
                         </div>
 
                         <button type="submit" disabled={loading} className="submit-btn">

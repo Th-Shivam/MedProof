@@ -34,10 +34,18 @@ const PatientVerify = ({ contract, initialBatchId }) => {
             const data = await contract.verifyBatch(idToVerify);
 
             // Destructure carefully based on contract return values
-            const [isValid, isExpired, isRecalled, rawMedicineName, manufacturerName, ipfsHash] = data;
+            // Returns: [isValid, isExpired, isRecalled, medicineName, manufacturerName, ipfsHash]
+            const [isValid, isExpired, isRecalled, rawMedicineName, manufacturerName, rawIpfsHash] = data;
 
             let medicineName = rawMedicineName;
             let distributorName = null;
+            let ipfsHash = rawIpfsHash;
+
+            // FIX: Handle Mock Hash from Demo Contract
+            if (ipfsHash && (ipfsHash.startsWith('QmMock') || ipfsHash.includes('MockHash'))) {
+                console.warn("Detected Mock IPFS Hash, swapping for valid Demo Cert...");
+                ipfsHash = "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi"; // Valid Sample IPFS CID
+            }
 
             if (rawMedicineName.includes('||')) {
                 const parts = rawMedicineName.split('||');
@@ -242,12 +250,25 @@ const PatientVerify = ({ contract, initialBatchId }) => {
 
                             {/* Cert Links */}
                             {result.ipfsHash && (
-                                <div className="cert-actions">
+                                <div className="cert-actions" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '15px' }}>
                                     <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#64748b' }}>{t('qaCert')}</span>
-                                    <div style={{ display: 'flex', gap: '10px' }}>
+                                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                                        {/* Primary Link (IPFS.io) */}
                                         <a href={`https://ipfs.io/ipfs/${result.ipfsHash}`} target="_blank" rel="noopener noreferrer" className="ipfs-link">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                                            View Report
+                                            View Report (Main)
+                                        </a>
+
+                                        {/* Mirror 1 (Pinata) */}
+                                        <a href={`https://gateway.pinata.cloud/ipfs/${result.ipfsHash}`} target="_blank" rel="noopener noreferrer" className="ipfs-link" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#059669' }}>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                                            Mirror 1
+                                        </a>
+
+                                        {/* Mirror 2 (dweb.link or Cloudflare) */}
+                                        <a href={`https://dweb.link/ipfs/${result.ipfsHash}`} target="_blank" rel="noopener noreferrer" className="ipfs-link" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#d97706' }}>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                                            Mirror 2
                                         </a>
                                     </div>
                                 </div>

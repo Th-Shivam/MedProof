@@ -28,7 +28,10 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         const formData = new FormData();
         formData.append('file', req.file.buffer, req.file.originalname);
         formData.append('pinataMetadata', JSON.stringify({ name: req.file.originalname }));
-        formData.append('pinataOptions', JSON.stringify({ cidVersion: 0 }));
+        formData.append('pinataOptions', JSON.stringify({
+            cidVersion: 0,
+            wrapWithDirectory: false
+        }));
 
         const pinataResponse = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
             maxBodyLength: "Infinity",
@@ -43,11 +46,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         const ipfsHashFromPinata = pinataResponse.data.IpfsHash;
         console.log("--- BACKEND DEBUG ---");
         console.log(`Received from Pinata: IpfsHash = ${ipfsHashFromPinata}`);
-        
+
         if (!ipfsHashFromPinata) {
             throw new Error("Pinata API response did not contain an IpfsHash.");
         }
-        
+
         // This is the data we are sending to the frontend.
         const responseData = {
             ipfsHash: ipfsHashFromPinata,
