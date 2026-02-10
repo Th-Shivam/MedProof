@@ -254,6 +254,17 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                                 )}
                             </div>
 
+                            {/* Cross-Reference Prompt (Only if Safe/Valid) */}
+                            {!result.isRecalled && !result.isExpired && (
+                                <div className="match-prompt" style={{ marginTop: '20px', padding: '15px', background: '#f0f9ff', borderRadius: '12px', border: '1px dashed #bae6fd', fontSize: '0.9rem', color: '#0369a1', textAlign: 'left' }}>
+                                    <strong style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px', color: '#0c4a6e' }}>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        Physical Verification Required:
+                                    </strong>
+                                    Please ensure the <strong>Batch ID</strong> and <strong>Expiry Date</strong> shown above match the details printed on your medicine strip/packaging to confirm authenticity.
+                                </div>
+                            )}
+
                             {/* Cert Links */}
                             {result.ipfsHash && (
                                 <div className="cert-actions" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '15px' }}>
