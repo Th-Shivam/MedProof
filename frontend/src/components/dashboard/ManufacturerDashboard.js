@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ethers } from 'ethers';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Updated import for v3+
 import './ManufacturerDashboard.css'; // Import new CSS
@@ -34,7 +35,10 @@ const ManufacturerDashboard = ({ contract, account }) => {
         try {
             setLoading(true);
             setStatus('⚠️ Initiating Batch Recall on Blockchain...');
-            const tx = await contract.recallBatch(recallBatchId, recallReason);
+            const tx = await contract.recallBatch(recallBatchId, recallReason, {
+                maxPriorityFeePerGas: ethers.utils.parseUnits('35', 'gwei'),
+                maxFeePerGas: ethers.utils.parseUnits('100', 'gwei')
+            });
             await tx.wait();
             setStatus('🚨 BATCH RECALLED SUCCESSFULLY. It is now flagged as dangerous.');
             setRecallBatchId('');
@@ -95,7 +99,11 @@ const ManufacturerDashboard = ({ contract, account }) => {
                 medicineNameWithDist,
                 formData.manufacturerName,
                 ipfsHash,
-                expiryTimestamp
+                expiryTimestamp,
+                {
+                    maxPriorityFeePerGas: ethers.utils.parseUnits('35', 'gwei'),
+                    maxFeePerGas: ethers.utils.parseUnits('100', 'gwei')
+                }
             );
 
             await tx.wait();
