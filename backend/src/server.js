@@ -10,7 +10,8 @@ const FormData = require('form-data');
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+// Allow all origins for the Hackathon so teammates and live sites can connect
+app.use(cors());
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 

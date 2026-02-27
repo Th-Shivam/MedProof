@@ -68,15 +68,37 @@ const ManufacturerDashboard = ({ contract, account }) => {
             if (file) {
                 const uploadData = new FormData();
                 uploadData.append('file', file);
+                uploadData.append('pinataMetadata', JSON.stringify({ name: file.name }));
+
                 try {
+                    // Try 1: Try hitting the backend first (works flawlessly on localhost)
                     const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
                     const response = await axios.post(`${backendUrl}/upload`, uploadData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     });
                     ipfsHash = response.data.ipfsHash;
-                } catch (e) {
-                    console.warn("IPFS Upload failed, using mock hash for demo", e);
-                    ipfsHash = "QmMockHashForDemo_" + Date.now();
+                } catch (backendError) {
+                    console.warn("Backend upload failed (likely CORS on deployed site). Falling back to direct Pinata...");
+
+                    try {
+                        // Try 2: Fallback to Direct IPFS upload (works on deployed site)
+                        const pinataJwt = process.env.REACT_APP_PINATA_JWT;
+                        if (!pinataJwt) {
+                            throw new Error("Pinata JWT is missing in frontend .env");
+                        }
+                        const response = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", uploadData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
+                                'Authorization': `Bearer ${pinataJwt}`
+                            }
+                        });
+                        ipfsHash = response.data.IpfsHash;
+                    } catch (e) {
+                        console.error("BOTH IPFS Uploads failed:", e);
+                        alert(`IPFS Upload Failed: Ensure Backend is running or JWT is correct.`);
+                        console.warn("Using mock hash for demo fallback:", e);
+                        ipfsHash = "QmMockHashForDemo_" + Date.now();
+                    }
                 }
             } else if (formData.ipfsHash) {
                 ipfsHash = formData.ipfsHash;
