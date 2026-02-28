@@ -19,7 +19,6 @@ function AppContent() {
     // ... (state lines 14-20) ...
     const [account, setAccount] = useState(null);
     const [provider, setProvider] = useState(null);
-    const [signer, setSigner] = useState(null);
     const [contract, setContract] = useState(null);
     const [network, setNetwork] = useState(null);
     const [view, setView] = useState('consumer'); // 'consumer' or 'manufacturer'
@@ -109,7 +108,6 @@ function AppContent() {
                 }
 
                 setProvider(newProvider);
-                setSigner(newSigner);
                 setAccount(accounts[0]);
                 setNetwork(networkInfo);
 
@@ -128,7 +126,6 @@ function AppContent() {
     const disconnectWallet = () => {
         setAccount(null);
         setProvider(null);
-        setSigner(null);
         setContract(null);
         setNetwork(null);
         setIsPublic(false); // Ensure public mode is off on disconnect
@@ -155,7 +152,7 @@ function AppContent() {
                 }
             }
         }
-    }, []);
+    }, [account]);
 
     // Function 1: Check Network Status
     const checkNetworkStatus = async (e) => {
@@ -204,7 +201,7 @@ function AppContent() {
                             <div className="gov-links">
                                 <a href="#main-content">{t('skipToMain')}</a>
                                 <span className="separator">|</span>
-                                <a href="#" onClick={handleScreenReader}>{t('screenReader')}</a>
+                                <button onClick={handleScreenReader} style={{ background: 'none', border: 'none', padding: 0, margin: 0, color: 'inherit', cursor: 'pointer' }}>{t('screenReader')}</button>
                             </div>
                             <div className="gov-settings">
                                 <span className="font-resize">
@@ -264,12 +261,12 @@ function AppContent() {
                                 {isMenuOpen ? '✕' : '☰'}
                             </button>
                             <ul className={isMenuOpen ? 'nav-links open' : 'nav-links'}>
-                                <li><a href="#" onClick={() => { setView('consumer'); closeMenu(); }} className={view === 'consumer' ? 'active' : ''}>{t('batchVerification')}</a></li>
+                                <li><button onClick={() => { setView('consumer'); closeMenu(); }} className={`nav-btn ${view === 'consumer' ? 'active' : ''}`}>{t('batchVerification')}</button></li>
                                 {!isPublic && (
-                                    <li><a href="#" onClick={() => { setView('manufacturer'); closeMenu(); }} className={view === 'manufacturer' ? 'active' : ''}>{t('manufacturerChain')}</a></li>
+                                    <li><button onClick={() => { setView('manufacturer'); closeMenu(); }} className={`nav-btn ${view === 'manufacturer' ? 'active' : ''}`}>{t('manufacturerChain')}</button></li>
                                 )}
-                                <li><a href="#" onClick={(e) => { checkNetworkStatus(e); closeMenu(); }}>{t('networkStatus')}</a></li>
-                                <li><a href="#" onClick={(e) => { handleSupport(e); closeMenu(); }}>{t('support')}</a></li>
+                                <li><button onClick={(e) => { checkNetworkStatus(e); closeMenu(); }} className="nav-btn">{t('networkStatus')}</button></li>
+                                <li><button onClick={(e) => { handleSupport(e); closeMenu(); }} className="nav-btn">{t('support')}</button></li>
                                 <li className="right-align-btn">
                                     <div onClick={closeMenu}>
                                         <WalletConnect account={account} network={network} connectWallet={connectWallet} disconnectWallet={disconnectWallet} />

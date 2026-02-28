@@ -130,6 +130,21 @@
   transition: all 0.2s;
 }
 
+.nic-navbar .nav-btn {
+  display: block;
+  padding: 1rem 1.5rem;
+  color: rgba(255, 255, 255, 0.95);
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .nic-navbar a:hover,
 .nic-navbar a.active {
   background: rgba(255, 255, 255, 0.15);
@@ -137,6 +152,14 @@
   border-bottom: 3px solid white;
   padding-bottom: 13px;
   /* Compensate border */
+}
+
+.nic-navbar .nav-btn:hover,
+.nic-navbar .nav-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-bottom: 3px solid white;
+  padding-bottom: 13px;
 }
 
 .content-area {
@@ -259,16 +282,20 @@
     text-align: center;
   }
 
-  .nic-navbar a {
+  .nic-navbar a,
+  .nic-navbar .nav-btn {
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
+    text-align: center;
   }
 
   .nic-navbar a:hover,
-  .nic-navbar a.active {
+  .nic-navbar a.active,
+  .nic-navbar .nav-btn:hover,
+  .nic-navbar .nav-btn.active {
     width: 100%;
     padding-bottom: 1rem;
     border-bottom: none;

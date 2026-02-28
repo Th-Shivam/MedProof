@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './PatientVerify.css'; // Import new CSS
 import QrScanner from 'react-qr-scanner';
 import { LanguageContext } from '../../context/LanguageContext';
@@ -11,17 +11,15 @@ const PatientVerify = ({ contract, initialBatchId }) => {
     const [isScanning, setIsScanning] = useState(false);
     const [showProMode, setShowProMode] = useState(false);
     const { t } = React.useContext(LanguageContext);
-
-    // Auto-verify if initialBatchId is provided (Deep Linking)
-    useEffect(() => {
-        if (initialBatchId) {
-            setBatchId(initialBatchId);
-            verifyBatch(initialBatchId);
+    const scannerConstraints = React.useMemo(() => ({
+        audio: false,
+        video: {
+            facingMode: { ideal: 'environment' }
         }
-    }, [initialBatchId, contract]);
+    }), []);
 
     // Modified to accept an optional ID (for auto-verify after scan)
-    const verifyBatch = async (manualId) => {
+    const verifyBatch = useCallback(async (manualId) => {
         const idToVerify = manualId || batchId;
         if (!contract || !idToVerify) return;
 
@@ -80,7 +78,15 @@ const PatientVerify = ({ contract, initialBatchId }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [batchId, contract, t]);
+
+    // Auto-verify if initialBatchId is provided (Deep Linking)
+    useEffect(() => {
+        if (initialBatchId) {
+            setBatchId(initialBatchId);
+            verifyBatch(initialBatchId);
+        }
+    }, [initialBatchId, verifyBatch]);
 
     const handleScan = (data) => {
         if (data) {
@@ -153,6 +159,7 @@ const PatientVerify = ({ contract, initialBatchId }) => {
                             delay={300}
                             onError={handleError}
                             onScan={handleScan}
+                            constraints={scannerConstraints}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                         <div className="scanner-overlay"></div>
